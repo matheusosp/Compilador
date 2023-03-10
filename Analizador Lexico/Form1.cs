@@ -2,12 +2,12 @@ namespace Analizador_Lexico
 {
     public partial class Form1 : Form
     {
-        string filePathCode = Path.Combine(Directory.GetCurrentDirectory(), "javaexample.txt");
+        string _filePathCode = Path.Combine(Directory.GetCurrentDirectory(), "javaexample.txt");
         public Form1()
         {
             InitializeComponent();
-            if (File.Exists(filePathCode)) { 
-                textBoxCode.Text = File.ReadAllText(filePathCode);
+            if (File.Exists(_filePathCode)) { 
+                textBoxCode.Text = File.ReadAllText(_filePathCode);
             }
         }
 
@@ -16,12 +16,12 @@ namespace Analizador_Lexico
             try
             {
                 var lexicalAnalyzer = new LexicalAnalyzer();
-                lexicalAnalyzer.AnalyzeCode(filePathCode);
+                lexicalAnalyzer.AnalyzeCode(_filePathCode);
                 ClearGrids();
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show(@"Error: " + ex.Message);
             }
 
         }
@@ -30,7 +30,7 @@ namespace Analizador_Lexico
             var file = new OpenFileDialog();
 
             file.InitialDirectory = Directory.GetDirectoryRoot(Directory.GetCurrentDirectory());
-            file.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            file.Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*";
             file.FilterIndex = 2;
             file.RestoreDirectory = true;
 
@@ -38,11 +38,11 @@ namespace Analizador_Lexico
             try
             {
                 textBoxCode.Text = File.ReadAllText(file.FileName);
-                filePathCode = file.FileName;
+                _filePathCode = file.FileName;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                MessageBox.Show(@"Error: Could not read file from disk. Original error: " + ex.Message);
             }
         }
         private void ClearGrids()

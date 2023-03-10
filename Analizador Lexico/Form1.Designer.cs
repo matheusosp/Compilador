@@ -73,7 +73,8 @@
             this.dataGridViewTableTokens.AllowUserToResizeColumns = false;
             this.dataGridViewTableTokens.AllowUserToResizeRows = false;
             this.dataGridViewTableTokens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewTableTokens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridViewTableTokens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewTableTokens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewTableTokens.Location = new System.Drawing.Point(683, 439);
             this.dataGridViewTableTokens.Name = "dataGridViewTableTokens";
             this.dataGridViewTableTokens.ReadOnly = true;
@@ -99,11 +100,11 @@
             this.dataGridViewTableSymbol.AllowUserToResizeColumns = false;
             this.dataGridViewTableSymbol.AllowUserToResizeRows = false;
             this.dataGridViewTableSymbol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewTableSymbol.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridViewTableSymbol.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewTableSymbol.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewTableSymbol.Location = new System.Drawing.Point(683, 74);
             this.dataGridViewTableSymbol.Name = "dataGridViewTableSymbol";
             this.dataGridViewTableSymbol.ReadOnly = true;
-            this.dataGridViewTableSymbol.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewTableSymbol.Size = new System.Drawing.Size(435, 328);
             this.dataGridViewTableSymbol.TabIndex = 9;
             // 
@@ -145,11 +146,12 @@
             this.dataGridViewTableErrors.AllowUserToResizeColumns = false;
             this.dataGridViewTableErrors.AllowUserToResizeRows = false;
             this.dataGridViewTableErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewTableErrors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewTableErrors.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewTableErrors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewTableErrors.Location = new System.Drawing.Point(23, 482);
             this.dataGridViewTableErrors.Name = "dataGridViewTableErrors";
             this.dataGridViewTableErrors.ReadOnly = true;
-            this.dataGridViewTableErrors.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewTableErrors.Size = new System.Drawing.Size(631, 299);
             this.dataGridViewTableErrors.TabIndex = 16;
             // 

@@ -1,7 +1,6 @@
 ﻿using Analizador_Lexico.Domain;
 using CsvHelper;
 using CsvHelper.Configuration;
-using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -9,19 +8,19 @@ namespace Analizador_Lexico;
 
 public class LexicalAnalyzer
 {
-    private readonly string[,] _transitionTable;
-    private readonly Dictionary<int, string> _endState;
     private readonly List<int> _regressionState;
-    public int _symbolsIdentificatorsTypeCount{ get; set; }
-    public static Dictionary<int, string> _symbolsIdentificatorsType{ get; set; }
-    private static readonly string[] _reservedWords =
-{
+    private readonly string[,] _transitionTable;
+    private int _symbolsIdentificatorsTypeCount;
+    private readonly Dictionary<int, string> _endState;
+    private Dictionary<int, string> _symbolsIdentificatorsType;
+    private readonly string[] _reservedWords =
+    {
             "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized",
             "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw",
             "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient",
             "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void",
             "class", "finally", "long", "strictfp", "volatile"
-        };
+    };
 
     public LexicalAnalyzer()
     {
@@ -38,22 +37,20 @@ public class LexicalAnalyzer
     private void AddSymbolsFromCsv()
     {
         var lastColumn = new string[_transitionTable.GetLength(0)];
-        for (int i = 0; i < _transitionTable.GetLength(0); i++)
+        for (var i = 0; i < _transitionTable.GetLength(0); i++)
         {
             lastColumn[i] = _transitionTable[i, _transitionTable.GetLength(1) - 1];
         }
         foreach (var row in lastColumn)
         {
-            if (row.Contains("//"))
+            if (!row.Contains("//")) continue;
+            var lineNumber = Array.IndexOf(lastColumn, row) - 1;
+            var splitRow = row.Split("//", StringSplitOptions.RemoveEmptyEntries).First();
+            var symbolName = splitRow.Trim();
+            _endState.Add(lineNumber, symbolName);
+            if (symbolName.Contains('*'))
             {
-                int lineNumber = Array.IndexOf(lastColumn, row) - 1;
-                string splitRow = row.Split("//", StringSplitOptions.RemoveEmptyEntries).First();
-                string symbolName = splitRow.Trim();
-                _endState.Add(lineNumber, symbolName);
-                if (symbolName.Contains("*"))
-                {
-                    _regressionState.Add(lineNumber);
-                }
+                _regressionState.Add(lineNumber);
             }
         }
     }
@@ -74,18 +71,18 @@ public class LexicalAnalyzer
         while (csvReader.Read())
         {
             var row = new List<string>();
-            string value;
-            for (var i = 0; csvReader.TryGetField(i, out value); i++)
-                row.Add(value.ToString());
-            
+            for (var i = 0; csvReader.TryGetField(i, out string? value); i++)
+                if (value != null)
+                    row.Add(value);
+
             rows.Add(row.ToArray());
         }
 
         var matriz = new string[rows.Count, rows[0].Length];
 
-        for (int i = 0; i < rows.Count; i++)
+        for (var i = 0; i < rows.Count; i++)
         {
-            for (int j = 0; j < rows[i].Length; j++)
+            for (var j = 0; j < rows[i].Length; j++)
             {
                 matriz[i, j] = rows[i][j];
             }
@@ -95,26 +92,26 @@ public class LexicalAnalyzer
     }
     public void AnalyzeCode(string filePathCode)
     {
-        StreamReader reader = new StreamReader(filePathCode);
-        int blockSize = 4096;
+        var reader = new StreamReader(filePathCode);
+        var blockSize = 4096;
 
         while (!reader.EndOfStream)
         {
-            char[] buffer = new char[blockSize];
-            int bytesRead = reader.ReadBlock(buffer, 0, blockSize);
-            int i = 0;
-            string linha = new string(buffer, 0, bytesRead);
-            string lexema = "";
-            int estado = 0;
+            var buffer = new char[blockSize];
+            var bytesRead = reader.ReadBlock(buffer, 0, blockSize);
+            var i = 0;
+            var linha = new string(buffer, 0, bytesRead);
+            var lexema = "";
+            var estado = 0;
 
             while (i < linha.Length)
             {
                 var car = linha[i];
                 lexema += car;
-                int coluna = GetColumn(car);
+                var coluna = GetColumn(car);
                 int.TryParse(_transitionTable[estado +1, coluna], out estado);
 
-                if (_endState.Keys.Contains(estado))
+                if (_endState.ContainsKey(estado))
                 {
                     if (_regressionState.Contains(estado))
                     {
@@ -129,7 +126,7 @@ public class LexicalAnalyzer
 
                 i += 1;
             }
-            if(_endState.Keys.Contains(estado) == false)
+            if(_endState.ContainsKey(estado) == false)
                 TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
         }
 
@@ -139,7 +136,7 @@ public class LexicalAnalyzer
     private int GetColumn(char caractere) {
         
         var firstRow = GetRow(0).ToList();
-        string stringCaractere = string.Empty;
+        var stringCaractere = string.Empty;
         if (char.IsLetter(caractere))
         {
             stringCaractere = "L";
@@ -167,22 +164,21 @@ public class LexicalAnalyzer
     }
     private void AddToken(int state, string lexema)
     {
-        var tokenType = "Undefined";
-        if (_endState.GetValueOrDefault(state).Contains("ERRO"))
+        var tokenType = "UNDEFINED";
+        if (_endState.GetValueOrDefault(state)!.Contains("ERRO"))
         {
             TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
         }
         else if (_reservedWords.Contains(lexema)) 
         {
             tokenType = "PALAVRA RESERVADA";
-            TableSymbol.AddSymbol(new Symbol { Id = state, Name = lexema });
             TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
         }
         else if (_endState.ContainsKey(state)) 
         {
             tokenType = _endState.GetValueOrDefault(state);
             var symbol = lexema;
-            if (tokenType.Contains("ID")) 
+            if (tokenType!.Contains("ID")) 
             {
                 if (!_symbolsIdentificatorsType.ContainsKey(_symbolsIdentificatorsTypeCount))
                 {
@@ -191,21 +187,23 @@ public class LexicalAnalyzer
                 }
                 
                 symbol = "ID," + _symbolsIdentificatorsType.FirstOrDefault(s => s.Value == lexema);
+                TableSymbol.AddSymbol(new Symbol { Id = state, Name = symbol });
+                TableToken.AddToken(new Token { Id = state, Name = symbol, Type = tokenType });
             }
-            TableSymbol.AddSymbol(new Symbol { Id = state, Name = symbol });
-            TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
+            else
+                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
         }
 
         
     }
-    public string[] GetColumn(int columnNumber)
+    private string[] GetColumn(int columnNumber)
     {
         return Enumerable.Range(0, _transitionTable.GetLength(0))
                 .Select(x => _transitionTable[x, columnNumber])
                 .ToArray();
     }
 
-    public string[] GetRow(int rowNumber)
+    private string[] GetRow(int rowNumber)
     {
         return Enumerable.Range(0, _transitionTable.GetLength(1))
                 .Select(x => _transitionTable[rowNumber, x])

@@ -4,7 +4,7 @@ namespace Analizador_Lexico;
 
 public static class TableToken
 {
-    public static List<Token> Table { get; set; } = new List<Token>();
+    public static List<Token> Table { get; } = new();
 
     public static void AddToken(Token token)
     {
@@ -13,12 +13,7 @@ public static class TableToken
 
     public static bool ContainsToken(Token token)
     {
-        foreach (var item in Table)
-        {
-            if (item.Name.Equals(token.Name))
-                return true;
-        }
-        return false;
+        return Table.Any(item => item.Name.Equals(token.Name));
     }
 
     public static void ClearTable()

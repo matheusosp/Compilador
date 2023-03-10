@@ -9,7 +9,7 @@ namespace Analizador_Lexico;
 
 public static class TableSymbol
 {
-    public static List<Symbol> Table { get; set; } = new List<Symbol>();
+    public static List<Symbol> Table { get;} = new();
 
     public static void AddSymbol(Symbol symbol)
     {
