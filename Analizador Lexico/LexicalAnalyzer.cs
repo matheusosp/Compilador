@@ -10,9 +10,9 @@ public class LexicalAnalyzer
 {
     private readonly List<int> _regressionState;
     private readonly string[,] _transitionTable;
-    private int _symbolsIdentificatorsTypeCount;
+    private int _symbolsIdentificatorsId;
     private readonly Dictionary<int, string> _endState;
-    private Dictionary<int, string> _symbolsIdentificatorsType;
+    private Dictionary<int, string> _symbolsIdentificators;
     private readonly string[] _reservedWords =
     {
             "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized",
@@ -27,7 +27,7 @@ public class LexicalAnalyzer
         _transitionTable = LoadExcel(Path.Combine(Directory.GetCurrentDirectory(), "Tabela de transicoes.csv"));
         _regressionState = new List<int>();
         _endState = new Dictionary<int, string>();
-        _symbolsIdentificatorsType = new Dictionary<int, string>();
+        _symbolsIdentificators = new Dictionary<int, string>();
         AddSymbolsFromCsv();
         TableSymbol.ClearTable();
         TableToken.ClearTable();
@@ -180,13 +180,13 @@ public class LexicalAnalyzer
             var symbol = lexema;
             if (tokenType!.Contains("ID")) 
             {
-                if (!_symbolsIdentificatorsType.ContainsKey(_symbolsIdentificatorsTypeCount))
+                if (!_symbolsIdentificators.ContainsKey(_symbolsIdentificatorsId))
                 {
-                    _symbolsIdentificatorsType.Add(_symbolsIdentificatorsTypeCount, lexema);
-                    _symbolsIdentificatorsTypeCount++;
+                    _symbolsIdentificators.Add(_symbolsIdentificatorsId, lexema);
+                    _symbolsIdentificatorsId++;
                 }
                 
-                symbol = "ID," + _symbolsIdentificatorsType.FirstOrDefault(s => s.Value == lexema);
+                symbol = "ID," + _symbolsIdentificators.FirstOrDefault(s => s.Value == lexema);
                 TableSymbol.AddSymbol(new Symbol { Id = state, Name = symbol });
                 TableToken.AddToken(new Token { Id = state, Name = symbol, Type = tokenType });
             }

@@ -1,62 +1,61 @@
-namespace Analizador_Lexico
+namespace Analizador_Lexico;
+
+public partial class Form1 : Form
 {
-    public partial class Form1 : Form
+    string _filePathCode = Path.Combine(Directory.GetCurrentDirectory(), "javaexample.txt");
+    public Form1()
     {
-        string _filePathCode = Path.Combine(Directory.GetCurrentDirectory(), "javaexample.txt");
-        public Form1()
+        InitializeComponent();
+        if (File.Exists(_filePathCode)) { 
+            textBoxCode.Text = File.ReadAllText(_filePathCode);
+        }
+    }
+
+    private void btnCompilar_Click(object sender, EventArgs e)
+    {
+        try
         {
-            InitializeComponent();
-            if (File.Exists(_filePathCode)) { 
-                textBoxCode.Text = File.ReadAllText(_filePathCode);
-            }
+            var lexicalAnalyzer = new LexicalAnalyzer();
+            lexicalAnalyzer.AnalyzeCode(_filePathCode);
+            ClearGrids();
+        }
+        catch(Exception ex)
+        {
+            MessageBox.Show(@"Error: " + ex.Message);
         }
 
-        private void btnCompilar_Click(object sender, EventArgs e)
+    }
+    private void btnOpenFileDialog_Click(object sender, EventArgs e)
+    {
+        var file = new OpenFileDialog();
+
+        file.InitialDirectory = Directory.GetDirectoryRoot(Directory.GetCurrentDirectory());
+        file.Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*";
+        file.FilterIndex = 2;
+        file.RestoreDirectory = true;
+
+        if (file.ShowDialog() != DialogResult.OK) return;
+        try
         {
-            try
-            {
-                var lexicalAnalyzer = new LexicalAnalyzer();
-                lexicalAnalyzer.AnalyzeCode(_filePathCode);
-                ClearGrids();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(@"Error: " + ex.Message);
-            }
-
+            textBoxCode.Text = File.ReadAllText(file.FileName);
+            _filePathCode = file.FileName;
         }
-        private void btnOpenFileDialog_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            var file = new OpenFileDialog();
-
-            file.InitialDirectory = Directory.GetDirectoryRoot(Directory.GetCurrentDirectory());
-            file.Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            file.FilterIndex = 2;
-            file.RestoreDirectory = true;
-
-            if (file.ShowDialog() != DialogResult.OK) return;
-            try
-            {
-                textBoxCode.Text = File.ReadAllText(file.FileName);
-                _filePathCode = file.FileName;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Error: Could not read file from disk. Original error: " + ex.Message);
-            }
+            MessageBox.Show(@"Error: Could not read file from disk. Original error: " + ex.Message);
         }
-        private void ClearGrids()
-        {
-            dataGridViewTableSymbol.DataSource = null;
-            dataGridViewTableTokens.DataSource = null;
-            dataGridViewTableErrors.DataSource = null;
-            dataGridViewTableSymbol.Rows.Clear();
-            dataGridViewTableTokens.Rows.Clear();
-            dataGridViewTableErrors.Rows.Clear();
-            dataGridViewTableSymbol.DataSource = TableSymbol.Table;
-            dataGridViewTableTokens.DataSource = TableToken.Table;
-            dataGridViewTableErrors.DataSource = TableErrors.Table;
+    }
+    private void ClearGrids()
+    {
+        dataGridViewTableSymbol.DataSource = null;
+        dataGridViewTableTokens.DataSource = null;
+        dataGridViewTableErrors.DataSource = null;
+        dataGridViewTableSymbol.Rows.Clear();
+        dataGridViewTableTokens.Rows.Clear();
+        dataGridViewTableErrors.Rows.Clear();
+        dataGridViewTableSymbol.DataSource = TableSymbol.Table;
+        dataGridViewTableTokens.DataSource = TableToken.Table;
+        dataGridViewTableErrors.DataSource = TableErrors.Table;
 
-        }
     }
 }
