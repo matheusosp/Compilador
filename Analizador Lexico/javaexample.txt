@@ -1,5 +1,10 @@
 ﻿public class HelloWorld {
     public static void main(String[] args) {
+        double teste = 10.;
+        teste = 20;
+        double 8num;
+        $
         System.out.println("Hello, world!");
+        println("zuas);
     }
 }
