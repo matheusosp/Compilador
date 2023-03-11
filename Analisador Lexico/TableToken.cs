@@ -1,6 +1,6 @@
-﻿using Analizador_Lexico.Domain;
+﻿using Analisador_Lexico.Domain;
 
-namespace Analizador_Lexico;
+namespace Analisador_Lexico;
 
 public static class TableToken
 {

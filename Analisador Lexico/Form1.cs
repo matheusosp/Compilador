@@ -1,4 +1,4 @@
-namespace Analizador_Lexico;
+namespace Analisador_Lexico;
 
 public partial class Form1 : Form
 {

@@ -1,10 +1,10 @@
-﻿using Analizador_Lexico.Domain;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using Analisador_Lexico.Domain;
 using CsvHelper;
 using CsvHelper.Configuration;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
-namespace Analizador_Lexico;
+namespace Analisador_Lexico;
 
 public class LexicalAnalyzer
 {

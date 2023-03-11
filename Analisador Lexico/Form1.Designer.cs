@@ -1,4 +1,4 @@
-﻿namespace Analizador_Lexico
+﻿namespace Analisador_Lexico
 {
     partial class Form1
     {

@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35378fa2-b3c7-4f42-8c21-2f7a3c79a4cf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Analizador Lexico/Form1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador Lexico/Form1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador Lexico/LexicalAnalyzer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador Lexico/LexicalAnalyzer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador Lexico/TableErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador Lexico/TableErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador Lexico/TableSymbol.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador Lexico/TableSymbol.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador Lexico/TableToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador Lexico/TableToken.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Analizador Lexico/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Analizador Lexico/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,26 +15,28 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectId" id="2MqJVhfYm7bbMg9Gz0AFGKidrnl" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\Mathe\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\Mathe\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\Mathe\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\Mathe\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Mathe\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\Mathe\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Analizador Lexico" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -68,14 +66,34 @@
       <option name="presentableId" value="Default" />
       <updated>1678489213130</updated>
       <workItem from="1678489215829" duration="783000" />
+      <workItem from="1678492691674" duration="794000" />
     </task>
+    <task id="LOCAL-00001" summary="Added README.md">
+      <created>1678492834105</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678492834105</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update README.md">
+      <created>1678495412879</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1678495412879</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Added README.md" />
+    <MESSAGE value="Update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
   </component>
 </project>

@@ -1,4 +1,4 @@
-# Analizador Lexico
+# Analisador Lexico
 
 # Como rodar a aplicação WindowsForms no Linux e Windows com .NET 6
 

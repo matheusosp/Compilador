@@ -1,11 +1,6 @@
-﻿using Analizador_Lexico.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Analisador_Lexico.Domain;
 
-namespace Analizador_Lexico;
+namespace Analisador_Lexico;
 
 public static class TableSymbol
 {
