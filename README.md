@@ -18,7 +18,7 @@ sudo apt-get update && \
   sudo apt-get install -y dotnet-sdk-6.0
 ```
 - Comando para checkar a instalaçao do .NET
-  ```--list-sdks```
+  ```dotnet --list-sdks```
 ## Passo a Passo
 
 ### 1. Acessar o diretório do projeto
