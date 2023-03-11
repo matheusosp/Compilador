@@ -8,9 +8,9 @@ namespace Analisador_Lexico;
 
 public class LexicalAnalyzer
 {
+    private int _symbolsIdentificatorsId;
     private readonly List<int> _regressionState;
     private readonly string[,] _transitionTable;
-    private int _symbolsIdentificatorsId;
     private readonly Dictionary<int, string> _endState;
     private Dictionary<int, string> _symbolsIdentificators;
     private readonly string[] _reservedWords =
@@ -34,62 +34,6 @@ public class LexicalAnalyzer
         TableErrors.ClearTable();
     }
 
-    private void AddSymbolsFromCsv()
-    {
-        var lastColumn = new string[_transitionTable.GetLength(0)];
-        for (var i = 0; i < _transitionTable.GetLength(0); i++)
-        {
-            lastColumn[i] = _transitionTable[i, _transitionTable.GetLength(1) - 1];
-        }
-        foreach (var row in lastColumn)
-        {
-            if (!row.Contains("//")) continue;
-            var lineNumber = Array.IndexOf(lastColumn, row) - 1;
-            var splitRow = row.Split("//", StringSplitOptions.RemoveEmptyEntries).First();
-            var symbolName = splitRow.Trim();
-            _endState.Add(lineNumber, symbolName);
-            if (symbolName.Contains('*'))
-            {
-                _regressionState.Add(lineNumber);
-            }
-        }
-    }
-
-    private static string[,] LoadExcel(string filePath)
-    {
-        var rows = new List<string[]>();
-
-        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true,
-            Delimiter = ","
-
-        };
-        using var stream = File.OpenText(filePath);
-        using var csvReader = new CsvReader(stream, csvConfig);
-
-        while (csvReader.Read())
-        {
-            var row = new List<string>();
-            for (var i = 0; csvReader.TryGetField(i, out string? value); i++)
-                if (value != null)
-                    row.Add(value);
-
-            rows.Add(row.ToArray());
-        }
-
-        var matriz = new string[rows.Count, rows[0].Length];
-
-        for (var i = 0; i < rows.Count; i++)
-        {
-            for (var j = 0; j < rows[i].Length; j++)
-            {
-                matriz[i, j] = rows[i][j];
-            }
-        }
-
-        return matriz;
-    }
     public void AnalyzeCode(string filePathCode)
     {
         var reader = new StreamReader(filePathCode);
@@ -119,7 +63,7 @@ public class LexicalAnalyzer
                         lexema = lexema.Substring(0, lexema.Length - 1).Trim();
                     }
 
-                    AddToken(estado, lexema);
+                    AddLexemeToTable(estado, lexema);
                     estado = 0;
                     lexema = "";
                 }
@@ -162,7 +106,7 @@ public class LexicalAnalyzer
             columnNumber = firstRow.IndexOf("Outros");
         return columnNumber;
     }
-    private void AddToken(int state, string lexema)
+    private void AddLexemeToTable(int state, string lexema)
     {
         var tokenType = "UNDEFINED";
         if (_endState.GetValueOrDefault(state)!.Contains("ERRO"))
@@ -193,8 +137,62 @@ public class LexicalAnalyzer
             else
                 TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
         }
-
         
+    }
+    private void AddSymbolsFromCsv()
+    {
+        var lastColumn = new string[_transitionTable.GetLength(0)];
+        for (var i = 0; i < _transitionTable.GetLength(0); i++)
+        {
+            lastColumn[i] = _transitionTable[i, _transitionTable.GetLength(1) - 1];
+        }
+        foreach (var row in lastColumn)
+        {
+            if (!row.Contains("//")) continue;
+            var lineNumber = Array.IndexOf(lastColumn, row) - 1;
+            var splitRow = row.Split("//", StringSplitOptions.RemoveEmptyEntries).First();
+            var symbolName = splitRow.Trim();
+            _endState.Add(lineNumber, symbolName);
+            if (symbolName.Contains('*'))
+            {
+                _regressionState.Add(lineNumber);
+            }
+        }
+    }
+    private static string[,] LoadExcel(string filePath)
+    {
+        var rows = new List<string[]>();
+
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = true,
+            Delimiter = ","
+
+        };
+        using var stream = File.OpenText(filePath);
+        using var csvReader = new CsvReader(stream, csvConfig);
+
+        while (csvReader.Read())
+        {
+            var row = new List<string>();
+            for (var i = 0; csvReader.TryGetField(i, out string? value); i++)
+                if (value != null)
+                    row.Add(value);
+
+            rows.Add(row.ToArray());
+        }
+
+        var matriz = new string[rows.Count, rows[0].Length];
+
+        for (var i = 0; i < rows.Count; i++)
+        {
+            for (var j = 0; j < rows[i].Length; j++)
+            {
+                matriz[i, j] = rows[i][j];
+            }
+        }
+
+        return matriz;
     }
     private string[] GetColumn(int columnNumber)
     {
