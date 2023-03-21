@@ -89,7 +89,7 @@ public class LexicalAnalyzer
         {
             stringCaractere = "D";
         }
-        else if (char.IsWhiteSpace(caractere))
+        else if (char.IsWhiteSpace(caractere) && caractere != '\r')
         {
             stringCaractere += " ";
         }

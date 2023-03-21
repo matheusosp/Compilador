@@ -15,16 +15,44 @@ public partial class Form1 : Form
     {
         try
         {
-            var lexicalAnalyzer = new LexicalAnalyzer();
+            UpdateCode();
+            var lexicalAnalyzer = new LexicalAnalyzer();         
             lexicalAnalyzer.AnalyzeCode(_filePathCode);
+            
             ClearGrids();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(@"Error: " + ex.Message);
         }
 
     }
+
+    private void UpdateCode()
+    {
+
+
+        // Abra o arquivo existente
+        using (StreamReader sr = new StreamReader(_filePathCode))
+        {
+            // Leia o conteúdo atual do arquivo
+            string content = sr.ReadToEnd();
+
+            // Feche o StreamReader
+            sr.Close();
+
+            // Abra o StreamWriter
+            using (StreamWriter sw = new StreamWriter(_filePathCode))
+            {
+                // Escreva o novo conteúdo no arquivo
+                sw.Write(textBoxCode?.Text);
+
+                // Feche o StreamWriter
+                sw.Close();
+            }
+        }
+    }
+
     private void btnOpenFileDialog_Click(object sender, EventArgs e)
     {
         var file = new OpenFileDialog();
