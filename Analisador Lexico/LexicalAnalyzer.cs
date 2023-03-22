@@ -37,7 +37,9 @@ public class LexicalAnalyzer
     public void AnalyzeCode(string filePathCode)
     {
         var reader = new StreamReader(filePathCode);
-        var blockSize = 4096;
+        var blockSize = 8;
+        var lexema = "";
+        var estado = 0;
 
         while (!reader.EndOfStream)
         {
@@ -45,8 +47,6 @@ public class LexicalAnalyzer
             var bytesRead = reader.ReadBlock(buffer, 0, blockSize);
             var i = 0;
             var linha = new string(buffer, 0, bytesRead);
-            var lexema = "";
-            var estado = 0;
 
             while (i < linha.Length)
             {
@@ -69,10 +69,11 @@ public class LexicalAnalyzer
                 }
 
                 i += 1;
+                
             }
-            if(_endState.ContainsKey(estado) == false)
-                TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
         }
+        if(_endState.ContainsKey(estado) == false )
+            TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
 
         reader.Close();
     }
@@ -101,7 +102,7 @@ public class LexicalAnalyzer
         {
             stringCaractere = caractere.ToString();
         }
-        int columnNumber = firstRow.IndexOf(stringCaractere);
+        var columnNumber = firstRow.IndexOf(stringCaractere);
         if(columnNumber == -1)
             columnNumber = firstRow.IndexOf("Outros");
         return columnNumber;
