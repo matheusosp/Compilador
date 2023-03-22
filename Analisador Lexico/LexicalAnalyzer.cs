@@ -8,11 +8,10 @@ namespace Analisador_Lexico;
 
 public class LexicalAnalyzer
 {
-    private int _symbolsIdentificatorsId;
     private readonly List<int> _regressionState;
     private readonly string[,] _transitionTable;
     private readonly Dictionary<int, string> _endState;
-    private Dictionary<int, string> _symbolsIdentificators;
+    private Dictionary<string, int> _symbolsIdentificators;
     private readonly string[] _reservedWords =
     {
             "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized",
@@ -27,7 +26,7 @@ public class LexicalAnalyzer
         _transitionTable = LoadExcel(Path.Combine(Directory.GetCurrentDirectory(), "Tabela de transicoes.csv"));
         _regressionState = new List<int>();
         _endState = new Dictionary<int, string>();
-        _symbolsIdentificators = new Dictionary<int, string>();
+        _symbolsIdentificators = new Dictionary<string, int>();
         AddSymbolsFromCsv();
         TableSymbol.ClearTable();
         TableToken.ClearTable();
@@ -121,24 +120,32 @@ public class LexicalAnalyzer
         else if (_endState.ContainsKey(state)) 
         {
             tokenType = _endState.GetValueOrDefault(state);
-            var symbol = lexema;
+
             if (tokenType!.Contains("ID")) 
             {
-                if (!_symbolsIdentificators.ContainsKey(_symbolsIdentificatorsId))
-                {
-                    _symbolsIdentificators.Add(_symbolsIdentificatorsId, lexema);
-                    _symbolsIdentificatorsId++;
-                }
-                
-                symbol = "ID," + _symbolsIdentificators.FirstOrDefault(s => s.Value == lexema);
-                TableSymbol.AddSymbol(new Symbol { Id = state, Name = symbol });
-                TableToken.AddToken(new Token { Id = state, Name = symbol, Type = tokenType });
+                var symbolValue = AddSymbolToTableAndList(lexema);
+                TableToken.AddToken(new Token { Id = state, Name = symbolValue, Type = tokenType });
             }
             else
                 TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
         }
         
     }
+
+    private string AddSymbolToTableAndList(string lexema)
+    {
+        if (_symbolsIdentificators.TryGetValue(lexema, out int index))
+        {
+            return $"ID, {index}";
+        }
+    
+        index = _symbolsIdentificators.Count;
+        _symbolsIdentificators[lexema] = index;
+        TableSymbol.AddSymbol(new Symbol { Id = index, Name = lexema });
+
+        return $"ID, {index}";
+    }
+
     private void AddSymbolsFromCsv()
     {
         var lastColumn = new string[_transitionTable.GetLength(0)];
