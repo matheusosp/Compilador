@@ -8,7 +8,7 @@ namespace Analisador_Lexico;
 
 public class LexicalAnalyzer
 {
-    private readonly List<int> _regressionState;
+    private readonly List<int> _regressionStates;
     private readonly string[,] _transitionTable;
     private readonly Dictionary<int, string> _endState;
     private Dictionary<string, int> _symbolsIdentificators;
@@ -24,10 +24,11 @@ public class LexicalAnalyzer
     public LexicalAnalyzer()
     {
         _transitionTable = LoadExcel(Path.Combine(Directory.GetCurrentDirectory(), "Tabela de transicoes.csv"));
-        _regressionState = new List<int>();
         _endState = new Dictionary<int, string>();
-        _symbolsIdentificators = new Dictionary<string, int>();
+        _regressionStates = new List<int>();
         AddSymbolsFromCsv();
+        
+        _symbolsIdentificators = new Dictionary<string, int>();
         TableSymbol.ClearTable();
         TableToken.ClearTable();
         TableErrors.ClearTable();
@@ -56,7 +57,7 @@ public class LexicalAnalyzer
 
                 if (_endState.ContainsKey(estado))
                 {
-                    if (_regressionState.Contains(estado))
+                    if (_regressionStates.Contains(estado))
                     {
                         i -= 1;
                         lexema = lexema.Substring(0, lexema.Length - 1).Trim();
@@ -107,12 +108,16 @@ public class LexicalAnalyzer
     }
     private void AddLexemeToTable(int state, string lexema)
     {
-        var tokenType = "UNDEFINED";
-        if (_endState.GetValueOrDefault(state)!.Contains("ERRO"))
+        if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("ERRO"))
         {
             TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
+            return;
         }
-        else if (_reservedWords.Contains(lexema)) 
+        if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("COMENTARIO"))
+            return;
+
+        var tokenType = "UNDEFINED";
+        if (_reservedWords.Contains(lexema)) 
         {
             tokenType = "PALAVRA RESERVADA";
             TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
@@ -134,11 +139,9 @@ public class LexicalAnalyzer
 
     private string AddSymbolToTableAndList(string lexema)
     {
-        if (_symbolsIdentificators.TryGetValue(lexema, out int index))
-        {
+        if (_symbolsIdentificators.TryGetValue(lexema, out var index))
             return $"ID, {index}";
-        }
-    
+
         index = _symbolsIdentificators.Count;
         _symbolsIdentificators[lexema] = index;
         TableSymbol.AddSymbol(new Symbol { Id = index, Name = lexema });
@@ -162,7 +165,7 @@ public class LexicalAnalyzer
             _endState.Add(lineNumber, symbolName);
             if (symbolName.Contains('*'))
             {
-                _regressionState.Add(lineNumber);
+                _regressionStates.Add(lineNumber);
             }
         }
     }
@@ -198,14 +201,8 @@ public class LexicalAnalyzer
                 matriz[i, j] = rows[i][j];
             }
         }
-
+        
         return matriz;
-    }
-    private string[] GetColumn(int columnNumber)
-    {
-        return Enumerable.Range(0, _transitionTable.GetLength(0))
-                .Select(x => _transitionTable[x, columnNumber])
-                .ToArray();
     }
 
     private string[] GetRow(int rowNumber)
