@@ -14,11 +14,8 @@ public class LexicalAnalyzer
     private Dictionary<string, int> _symbolsIdentificators;
     private readonly string[] _reservedWords =
     {
-            "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized",
-            "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw",
-            "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient",
-            "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void",
-            "class", "finally", "long", "strictfp", "volatile"
+            "int","float","char","boolean","void","if","else","for","while",
+            "scanf","println","main","return"
     };
 
     public LexicalAnalyzer()
