@@ -1,11 +1,10 @@
-﻿public class HelloWorld {
-    public static void main(String[] args) {
-        double teste = 10.;
-        teste = 20;
-        double 8num;
-        $
-        double soma = 10.0 + 10.0;
-        println("aaaa);
-        double mult = soma * 2;
-    }
+﻿int main() {
+  int x,y, resultado;	
+  x = 5;
+  y = 10;
+  resultado = x + y;
+  
+  println(resultado);
+
+  return 0;
 }

@@ -28,168 +28,403 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelTokens = new System.Windows.Forms.Label();
-            this.textBoxCode = new System.Windows.Forms.TextBox();
-            this.dataGridViewTableTokens = new System.Windows.Forms.DataGridView();
-            this.labelSymbols = new System.Windows.Forms.Label();
-            this.dataGridViewTableSymbol = new System.Windows.Forms.DataGridView();
-            this.btnOpenFileDialog = new System.Windows.Forms.Button();
-            this.btnCompilar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dataGridViewTableErrors = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableTokens)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableSymbol)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableErrors)).BeginInit();
-            this.SuspendLayout();
+            labelTokens = new Label();
+            textBoxCode = new TextBox();
+            btnOpenFileDialog = new Button();
+            btnCompilar = new Button();
+            tabControl1 = new TabControl();
+            tabPageLexical = new TabPage();
+            label2 = new Label();
+            dataGridViewTableSymbol = new DataGridView();
+            dataGridViewTableTokens = new DataGridView();
+            labelSymbols = new Label();
+            label1 = new Label();
+            dataGridViewTableErrors = new DataGridView();
+            tabPageSyntactic = new TabPage();
+            tabControl2 = new TabControl();
+            TabPageTest = new TabPage();
+            dataGridParserTrace = new DataGridView();
+            dataGridParserOutput = new DataGridView();
+            labelOutput = new Label();
+            labelParserTrace = new Label();
+            tabPageParserStates = new TabPage();
+            tbParserStates = new TextBox();
+            tabPageNonTerminals = new TabPage();
+            tbNonTerminals = new TextBox();
+            State = new DataGridViewTextBoxColumn();
+            StackTop = new DataGridViewTextBoxColumn();
+            Input = new DataGridViewTextBoxColumn();
+            Action = new DataGridViewTextBoxColumn();
+            LC = new DataGridViewTextBoxColumn();
+            ErrorMessage = new DataGridViewTextBoxColumn();
+            tabControl1.SuspendLayout();
+            tabPageLexical.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableSymbol).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableTokens).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableErrors).BeginInit();
+            tabPageSyntactic.SuspendLayout();
+            tabControl2.SuspendLayout();
+            TabPageTest.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridParserTrace).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridParserOutput).BeginInit();
+            tabPageParserStates.SuspendLayout();
+            tabPageNonTerminals.SuspendLayout();
+            SuspendLayout();
             // 
             // labelTokens
             // 
-            this.labelTokens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelTokens.AutoSize = true;
-            this.labelTokens.Location = new System.Drawing.Point(683, 421);
-            this.labelTokens.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelTokens.Name = "labelTokens";
-            this.labelTokens.Size = new System.Drawing.Size(97, 15);
-            this.labelTokens.TabIndex = 12;
-            this.labelTokens.Text = "Tabela de tokens:";
+            labelTokens.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            labelTokens.AutoSize = true;
+            labelTokens.Location = new Point(333, -144);
+            labelTokens.Margin = new Padding(4, 0, 4, 0);
+            labelTokens.Name = "labelTokens";
+            labelTokens.Size = new Size(97, 15);
+            labelTokens.TabIndex = 12;
+            labelTokens.Text = "Tabela de tokens:";
             // 
             // textBoxCode
             // 
-            this.textBoxCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCode.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxCode.Location = new System.Drawing.Point(23, 45);
-            this.textBoxCode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxCode.Multiline = true;
-            this.textBoxCode.Name = "textBoxCode";
-            this.textBoxCode.Size = new System.Drawing.Size(631, 409);
-            this.textBoxCode.TabIndex = 8;
-            // 
-            // dataGridViewTableTokens
-            // 
-            this.dataGridViewTableTokens.AllowUserToAddRows = false;
-            this.dataGridViewTableTokens.AllowUserToDeleteRows = false;
-            this.dataGridViewTableTokens.AllowUserToResizeColumns = false;
-            this.dataGridViewTableTokens.AllowUserToResizeRows = false;
-            this.dataGridViewTableTokens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewTableTokens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridViewTableTokens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridViewTableTokens.Location = new System.Drawing.Point(683, 439);
-            this.dataGridViewTableTokens.Name = "dataGridViewTableTokens";
-            this.dataGridViewTableTokens.ReadOnly = true;
-            this.dataGridViewTableTokens.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridViewTableTokens.Size = new System.Drawing.Size(435, 342);
-            this.dataGridViewTableTokens.TabIndex = 11;
-            // 
-            // labelSymbols
-            // 
-            this.labelSymbols.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelSymbols.AutoSize = true;
-            this.labelSymbols.Location = new System.Drawing.Point(683, 46);
-            this.labelSymbols.Name = "labelSymbols";
-            this.labelSymbols.Size = new System.Drawing.Size(110, 15);
-            this.labelSymbols.TabIndex = 10;
-            this.labelSymbols.Text = "Tabela de simbolos:";
-            // 
-            // dataGridViewTableSymbol
-            // 
-            this.dataGridViewTableSymbol.AllowUserToAddRows = false;
-            this.dataGridViewTableSymbol.AllowUserToDeleteRows = false;
-            this.dataGridViewTableSymbol.AllowUserToResizeColumns = false;
-            this.dataGridViewTableSymbol.AllowUserToResizeRows = false;
-            this.dataGridViewTableSymbol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewTableSymbol.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridViewTableSymbol.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridViewTableSymbol.Location = new System.Drawing.Point(683, 74);
-            this.dataGridViewTableSymbol.Name = "dataGridViewTableSymbol";
-            this.dataGridViewTableSymbol.ReadOnly = true;
-            this.dataGridViewTableSymbol.Size = new System.Drawing.Size(435, 328);
-            this.dataGridViewTableSymbol.TabIndex = 9;
+            textBoxCode.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxCode.Font = new Font("Courier New", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            textBoxCode.Location = new Point(23, 45);
+            textBoxCode.Margin = new Padding(4, 3, 4, 3);
+            textBoxCode.Multiline = true;
+            textBoxCode.Name = "textBoxCode";
+            textBoxCode.Size = new Size(733, 275);
+            textBoxCode.TabIndex = 8;
             // 
             // btnOpenFileDialog
             // 
-            this.btnOpenFileDialog.Location = new System.Drawing.Point(117, 12);
-            this.btnOpenFileDialog.Name = "btnOpenFileDialog";
-            this.btnOpenFileDialog.Size = new System.Drawing.Size(99, 27);
-            this.btnOpenFileDialog.TabIndex = 14;
-            this.btnOpenFileDialog.Text = "Abrir arquivo";
-            this.btnOpenFileDialog.UseVisualStyleBackColor = true;
-            this.btnOpenFileDialog.Click += new System.EventHandler(this.btnOpenFileDialog_Click);
+            btnOpenFileDialog.Location = new Point(117, 12);
+            btnOpenFileDialog.Name = "btnOpenFileDialog";
+            btnOpenFileDialog.Size = new Size(99, 27);
+            btnOpenFileDialog.TabIndex = 14;
+            btnOpenFileDialog.Text = "Abrir arquivo";
+            btnOpenFileDialog.UseVisualStyleBackColor = true;
+            btnOpenFileDialog.Click += btnOpenFileDialog_Click;
             // 
             // btnCompilar
             // 
-            this.btnCompilar.Location = new System.Drawing.Point(23, 12);
-            this.btnCompilar.Name = "btnCompilar";
-            this.btnCompilar.Size = new System.Drawing.Size(88, 27);
-            this.btnCompilar.TabIndex = 15;
-            this.btnCompilar.Text = "Compilar";
-            this.btnCompilar.UseVisualStyleBackColor = true;
-            this.btnCompilar.Click += new System.EventHandler(this.btnCompilar_Click);
+            btnCompilar.Location = new Point(23, 12);
+            btnCompilar.Name = "btnCompilar";
+            btnCompilar.Size = new Size(88, 27);
+            btnCompilar.TabIndex = 15;
+            btnCompilar.Text = "Compilar";
+            btnCompilar.UseVisualStyleBackColor = true;
+            btnCompilar.Click += btnCompilar_Click;
+            // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabPageLexical);
+            tabControl1.Controls.Add(tabPageSyntactic);
+            tabControl1.Location = new Point(23, 326);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(1042, 549);
+            tabControl1.TabIndex = 18;
+            // 
+            // tabPageLexical
+            // 
+            tabPageLexical.Controls.Add(label2);
+            tabPageLexical.Controls.Add(dataGridViewTableSymbol);
+            tabPageLexical.Controls.Add(dataGridViewTableTokens);
+            tabPageLexical.Controls.Add(labelSymbols);
+            tabPageLexical.Controls.Add(label1);
+            tabPageLexical.Controls.Add(dataGridViewTableErrors);
+            tabPageLexical.Location = new Point(4, 24);
+            tabPageLexical.Name = "tabPageLexical";
+            tabPageLexical.Padding = new Padding(3);
+            tabPageLexical.Size = new Size(1034, 521);
+            tabPageLexical.TabIndex = 0;
+            tabPageLexical.Text = "Analizador Lexico";
+            tabPageLexical.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top;
+            label2.AutoSize = true;
+            label2.Location = new Point(468, 14);
+            label2.Name = "label2";
+            label2.Size = new Size(97, 15);
+            label2.TabIndex = 18;
+            label2.Text = "Tabela de tokens:";
+            // 
+            // dataGridViewTableSymbol
+            // 
+            dataGridViewTableSymbol.AllowUserToAddRows = false;
+            dataGridViewTableSymbol.AllowUserToDeleteRows = false;
+            dataGridViewTableSymbol.AllowUserToResizeColumns = false;
+            dataGridViewTableSymbol.AllowUserToResizeRows = false;
+            dataGridViewTableSymbol.Anchor = AnchorStyles.Top;
+            dataGridViewTableSymbol.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewTableSymbol.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewTableSymbol.Location = new Point(6, 32);
+            dataGridViewTableSymbol.Name = "dataGridViewTableSymbol";
+            dataGridViewTableSymbol.ReadOnly = true;
+            dataGridViewTableSymbol.Size = new Size(435, 230);
+            dataGridViewTableSymbol.TabIndex = 9;
+            // 
+            // dataGridViewTableTokens
+            // 
+            dataGridViewTableTokens.AllowUserToAddRows = false;
+            dataGridViewTableTokens.AllowUserToDeleteRows = false;
+            dataGridViewTableTokens.AllowUserToResizeColumns = false;
+            dataGridViewTableTokens.AllowUserToResizeRows = false;
+            dataGridViewTableTokens.Anchor = AnchorStyles.Top;
+            dataGridViewTableTokens.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewTableTokens.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewTableTokens.Location = new Point(468, 35);
+            dataGridViewTableTokens.Name = "dataGridViewTableTokens";
+            dataGridViewTableTokens.ReadOnly = true;
+            dataGridViewTableTokens.Size = new Size(435, 431);
+            dataGridViewTableTokens.TabIndex = 11;
+            // 
+            // labelSymbols
+            // 
+            labelSymbols.Anchor = AnchorStyles.Top;
+            labelSymbols.AutoSize = true;
+            labelSymbols.Location = new Point(6, 14);
+            labelSymbols.Name = "labelSymbols";
+            labelSymbols.Size = new Size(110, 15);
+            labelSymbols.TabIndex = 10;
+            labelSymbols.Text = "Tabela de simbolos:";
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 464);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 15);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "Tabela de erros:";
+            label1.Anchor = AnchorStyles.Top;
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 275);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(88, 15);
+            label1.TabIndex = 17;
+            label1.Text = "Tabela de erros:";
+            label1.Click += label1_Click;
             // 
             // dataGridViewTableErrors
             // 
-            this.dataGridViewTableErrors.AllowUserToAddRows = false;
-            this.dataGridViewTableErrors.AllowUserToDeleteRows = false;
-            this.dataGridViewTableErrors.AllowUserToResizeColumns = false;
-            this.dataGridViewTableErrors.AllowUserToResizeRows = false;
-            this.dataGridViewTableErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewTableErrors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridViewTableErrors.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridViewTableErrors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridViewTableErrors.Location = new System.Drawing.Point(23, 482);
-            this.dataGridViewTableErrors.Name = "dataGridViewTableErrors";
-            this.dataGridViewTableErrors.ReadOnly = true;
-            this.dataGridViewTableErrors.Size = new System.Drawing.Size(631, 299);
-            this.dataGridViewTableErrors.TabIndex = 16;
+            dataGridViewTableErrors.AllowUserToAddRows = false;
+            dataGridViewTableErrors.AllowUserToDeleteRows = false;
+            dataGridViewTableErrors.AllowUserToResizeColumns = false;
+            dataGridViewTableErrors.AllowUserToResizeRows = false;
+            dataGridViewTableErrors.Anchor = AnchorStyles.Top;
+            dataGridViewTableErrors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewTableErrors.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewTableErrors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewTableErrors.Location = new Point(6, 297);
+            dataGridViewTableErrors.Name = "dataGridViewTableErrors";
+            dataGridViewTableErrors.ReadOnly = true;
+            dataGridViewTableErrors.Size = new Size(435, 169);
+            dataGridViewTableErrors.TabIndex = 16;
+            // 
+            // tabPageSyntactic
+            // 
+            tabPageSyntactic.Controls.Add(tabControl2);
+            tabPageSyntactic.Controls.Add(labelTokens);
+            tabPageSyntactic.Location = new Point(4, 24);
+            tabPageSyntactic.Name = "tabPageSyntactic";
+            tabPageSyntactic.Padding = new Padding(3);
+            tabPageSyntactic.Size = new Size(1034, 521);
+            tabPageSyntactic.TabIndex = 1;
+            tabPageSyntactic.Text = "Analizador Sintatico";
+            tabPageSyntactic.UseVisualStyleBackColor = true;
+            tabPageSyntactic.Click += tabPageSyntactic_Click;
+            // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(TabPageTest);
+            tabControl2.Controls.Add(tabPageParserStates);
+            tabControl2.Controls.Add(tabPageNonTerminals);
+            tabControl2.Location = new Point(6, 6);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(1025, 500);
+            tabControl2.TabIndex = 17;
+            // 
+            // TabPageTest
+            // 
+            TabPageTest.Controls.Add(dataGridParserTrace);
+            TabPageTest.Controls.Add(dataGridParserOutput);
+            TabPageTest.Controls.Add(labelOutput);
+            TabPageTest.Controls.Add(labelParserTrace);
+            TabPageTest.Location = new Point(4, 24);
+            TabPageTest.Name = "TabPageTest";
+            TabPageTest.Padding = new Padding(3);
+            TabPageTest.Size = new Size(1017, 472);
+            TabPageTest.TabIndex = 0;
+            TabPageTest.Text = "Test";
+            TabPageTest.UseVisualStyleBackColor = true;
+            // 
+            // dataGridParserTrace
+            // 
+            dataGridParserTrace.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridParserTrace.Columns.AddRange(new DataGridViewColumn[] { State, StackTop, Input, Action });
+            dataGridParserTrace.Location = new Point(6, 29);
+            dataGridParserTrace.Name = "dataGridParserTrace";
+            dataGridParserTrace.RowTemplate.Height = 25;
+            dataGridParserTrace.Size = new Size(493, 406);
+            dataGridParserTrace.TabIndex = 14;
+            // 
+            // dataGridParserOutput
+            // 
+            dataGridParserOutput.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridParserOutput.Columns.AddRange(new DataGridViewColumn[] { LC, ErrorMessage });
+            dataGridParserOutput.Location = new Point(505, 29);
+            dataGridParserOutput.Name = "dataGridParserOutput";
+            dataGridParserOutput.RowTemplate.Height = 25;
+            dataGridParserOutput.Size = new Size(469, 406);
+            dataGridParserOutput.TabIndex = 16;
+            // 
+            // labelOutput
+            // 
+            labelOutput.AutoSize = true;
+            labelOutput.Location = new Point(505, 11);
+            labelOutput.Name = "labelOutput";
+            labelOutput.Size = new Size(80, 15);
+            labelOutput.TabIndex = 15;
+            labelOutput.Text = "Parser Output";
+            // 
+            // labelParserTrace
+            // 
+            labelParserTrace.AutoSize = true;
+            labelParserTrace.Location = new Point(6, 11);
+            labelParserTrace.Name = "labelParserTrace";
+            labelParserTrace.Size = new Size(69, 15);
+            labelParserTrace.TabIndex = 13;
+            labelParserTrace.Text = "Parser Trace";
+            // 
+            // tabPageParserStates
+            // 
+            tabPageParserStates.Controls.Add(tbParserStates);
+            tabPageParserStates.Location = new Point(4, 24);
+            tabPageParserStates.Name = "tabPageParserStates";
+            tabPageParserStates.Padding = new Padding(3);
+            tabPageParserStates.Size = new Size(1017, 472);
+            tabPageParserStates.TabIndex = 1;
+            tabPageParserStates.Text = "Parser States";
+            tabPageParserStates.UseVisualStyleBackColor = true;
+            // 
+            // tbParserStates
+            // 
+            tbParserStates.Location = new Point(7, 14);
+            tbParserStates.Multiline = true;
+            tbParserStates.Name = "tbParserStates";
+            tbParserStates.ScrollBars = ScrollBars.Vertical;
+            tbParserStates.Size = new Size(849, 440);
+            tbParserStates.TabIndex = 0;
+            // 
+            // tabPageNonTerminals
+            // 
+            tabPageNonTerminals.Controls.Add(tbNonTerminals);
+            tabPageNonTerminals.Location = new Point(4, 24);
+            tabPageNonTerminals.Name = "tabPageNonTerminals";
+            tabPageNonTerminals.Size = new Size(1017, 472);
+            tabPageNonTerminals.TabIndex = 2;
+            tabPageNonTerminals.Text = "Non-Terminals";
+            tabPageNonTerminals.UseVisualStyleBackColor = true;
+            // 
+            // tbNonTerminals
+            // 
+            tbNonTerminals.Location = new Point(14, 17);
+            tbNonTerminals.Multiline = true;
+            tbNonTerminals.Name = "tbNonTerminals";
+            tbNonTerminals.ScrollBars = ScrollBars.Vertical;
+            tbNonTerminals.Size = new Size(849, 440);
+            tbNonTerminals.TabIndex = 1;
+            // 
+            // State
+            // 
+            State.HeaderText = "State";
+            State.Name = "State";
+            // 
+            // StackTop
+            // 
+            StackTop.HeaderText = "Stack Top";
+            StackTop.Name = "StackTop";
+            // 
+            // Input
+            // 
+            Input.HeaderText = "Input";
+            Input.Name = "Input";
+            // 
+            // Action
+            // 
+            Action.HeaderText = "Action";
+            Action.Name = "Action";
+            // 
+            // LC
+            // 
+            LC.HeaderText = "L.C";
+            LC.Name = "LC";
+            // 
+            // ErrorMessage
+            // 
+            ErrorMessage.HeaderText = "Error Message";
+            ErrorMessage.Name = "ErrorMessage";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1142, 868);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridViewTableErrors);
-            this.Controls.Add(this.btnCompilar);
-            this.Controls.Add(this.btnOpenFileDialog);
-            this.Controls.Add(this.labelTokens);
-            this.Controls.Add(this.textBoxCode);
-            this.Controls.Add(this.dataGridViewTableTokens);
-            this.Controls.Add(this.labelSymbols);
-            this.Controls.Add(this.dataGridViewTableSymbol);
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableTokens)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableSymbol)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTableErrors)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1142, 868);
+            Controls.Add(textBoxCode);
+            Controls.Add(btnCompilar);
+            Controls.Add(btnOpenFileDialog);
+            Controls.Add(tabControl1);
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Form1";
+            tabControl1.ResumeLayout(false);
+            tabPageLexical.ResumeLayout(false);
+            tabPageLexical.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableSymbol).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableTokens).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTableErrors).EndInit();
+            tabPageSyntactic.ResumeLayout(false);
+            tabPageSyntactic.PerformLayout();
+            tabControl2.ResumeLayout(false);
+            TabPageTest.ResumeLayout(false);
+            TabPageTest.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridParserTrace).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridParserOutput).EndInit();
+            tabPageParserStates.ResumeLayout(false);
+            tabPageParserStates.PerformLayout();
+            tabPageNonTerminals.ResumeLayout(false);
+            tabPageNonTerminals.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Label labelTokens;
         private TextBox textBoxCode;
-        private DataGridView dataGridViewTableTokens;
-        private Label labelSymbols;
-        private DataGridView dataGridViewTableSymbol;
         private Button btnOpenFileDialog;
         private Button btnCompilar;
+        private TabControl tabControl1;
+        private TabPage tabPageLexical;
+        private TabPage tabPageSyntactic;
+        private Label label2;
+        private DataGridView dataGridViewTableSymbol;
+        private DataGridView dataGridViewTableTokens;
+        private Label labelSymbols;
         private Label label1;
         private DataGridView dataGridViewTableErrors;
+        private DataGridView dataGridParserOutput;
+        private Label labelOutput;
+        private DataGridView dataGridParserTrace;
+        private Label labelParserTrace;
+        private TabControl tabControl2;
+        private TabPage TabPageTest;
+        private TabPage tabPageParserStates;
+        private TextBox tbParserStates;
+        private TabPage tabPageNonTerminals;
+        private TextBox tbNonTerminals;
+        private DataGridViewTextBoxColumn State;
+        private DataGridViewTextBoxColumn StackTop;
+        private DataGridViewTextBoxColumn Input;
+        private DataGridViewTextBoxColumn Action;
+        private DataGridViewTextBoxColumn LC;
+        private DataGridViewTextBoxColumn ErrorMessage;
     }
 }

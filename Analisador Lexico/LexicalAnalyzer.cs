@@ -34,7 +34,7 @@ public class LexicalAnalyzer
     public void AnalyzeCode(string filePathCode)
     {
         var reader = new StreamReader(filePathCode);
-        var blockSize = 8;
+        const int blockSize = 8;
         var lexema = "";
         var estado = 0;
 
@@ -59,7 +59,6 @@ public class LexicalAnalyzer
                         i -= 1;
                         lexema = lexema.Substring(0, lexema.Length - 1).Trim();
                     }
-
                     AddLexemeToTable(estado, lexema);
                     estado = 0;
                     lexema = "";
@@ -69,7 +68,7 @@ public class LexicalAnalyzer
                 
             }
         }
-        if(_endState.ContainsKey(estado) == false )
+        if(_endState.ContainsKey(estado) == false && estado != 0)
             TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
 
         reader.Close();
@@ -161,7 +160,7 @@ public class LexicalAnalyzer
             var splitRow = row.Split("//", StringSplitOptions.RemoveEmptyEntries).First();
             var symbolName = splitRow.Trim();
             _endState.Add(lineNumber, symbolName);
-            if (symbolName.Contains('*'))
+            if (symbolName.Substring(symbolName.Length-1,1).Contains('*'))
             {
                 _regressionStates.Add(lineNumber);
             }

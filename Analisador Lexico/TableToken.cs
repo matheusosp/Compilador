@@ -10,12 +10,7 @@ public static class TableToken
     {
         Table.Add(token);
     }
-
-    public static bool ContainsToken(Token token)
-    {
-        return Table.Any(item => item.Name.Equals(token.Name));
-    }
-
+    
     public static void ClearTable()
     {
         Table.Clear();
