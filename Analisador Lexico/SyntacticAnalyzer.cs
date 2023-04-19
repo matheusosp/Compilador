@@ -1,8 +1,4 @@
-﻿using Analisador_Lexico.Domain;
-using Analisador_Lexico.Irony.Parsing.Scanner;
-using static System.Windows.Forms.AxHost;
-using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Analisador_Lexico;
 
