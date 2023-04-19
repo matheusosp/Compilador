@@ -1,4 +1,4 @@
-﻿int main() {
+﻿main() {
   int x,y, resultado;	
   x = 5;
   y = 10;
@@ -7,4 +7,4 @@
   println(resultado);
 
   return 0;
-}
+} 

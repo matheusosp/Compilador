@@ -16,7 +16,7 @@ public class SimpleCGrammar : Grammar
     {
         var id = new IdentifierTerminal("id");
         var text = new StringLiteral("texto", "\"", StringOptions.AllowsAllEscapes);
-        var number = new NumberLiteral("number");
+        //var number = new NumberLiteral("number");
         var comma = ToTerm(",");
 
         //RegisterOperators(1, "||");
@@ -76,16 +76,16 @@ public class SimpleCGrammar : Grammar
 
         this.Root = PROGRAMA;
 
-        PROGRAMA.Rule = LISTAFUNCOES | PRINCIPAL;
+        PROGRAMA.Rule = LISTAFUNCOES + PRINCIPAL;
         LISTAFUNCOES.Rule = DECFUNCAO + LISTAFUNCOES | Empty;
         DECFUNCAO.Rule = TIPORETORNO + id + "(" + PARAMETROS + ")" + BLOCO;
         TIPORETORNO.Rule = TIPO | "void";
         TIPO.Rule = TIPOBASE + DIMENSAO ;
         TIPOBASE.Rule = ToTerm("char") | "float" | "int" | "boolean";
-        DIMENSAO.Rule = ToTerm("[") + number + "]" + DIMENSAO | Empty; 
+        DIMENSAO.Rule = ToTerm("[") + "num_int" + "]" + DIMENSAO | Empty; 
         PARAMETROS.Rule = TIPO + id + LISTAPARAMETROS | Empty;
         LISTAPARAMETROS.Rule = ToTerm(",") + TIPO + id + LISTAPARAMETROS | Empty;
-        PRINCIPAL.Rule = TIPORETORNO + "main" + "(" + ")" + BLOCO;
+        PRINCIPAL.Rule = "main" + ToTerm("(") + ")" + BLOCO;
         BLOCO.Rule = ToTerm("{") + LISTAVARIAVEIS + COMANDOS + "}";
         LISTAVARIAVEIS.Rule = TIPO + id + LISTAID + ToTerm(";") + LISTAVARIAVEIS | Empty;
         LISTAID.Rule = ToTerm(",") + id + LISTAID | Empty;
@@ -122,7 +122,7 @@ public class SimpleCGrammar : Grammar
         OP_MULTIPLICATIVO.Rule = ToTerm("*") | "/" | "%";
         FATOR.Rule = SINAL + TERMOESCRITA | text | "!" + FATOR | "(" + EXPRESSAO + ")";
         SINAL.Rule = ToTerm("+") | "-" | Empty; 
-        CONSTANTE.Rule = number;
+        CONSTANTE.Rule = ToTerm("num_int") | "num_dec";
 
         COMP.Rule = ToTerm("<") | "==" | "!=" | ">" | "<=" | ">=";
         this.MarkReservedWords(

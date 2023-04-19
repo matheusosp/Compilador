@@ -44,19 +44,15 @@
             tabControl2 = new TabControl();
             TabPageTest = new TabPage();
             dataGridParserTrace = new DataGridView();
-            dataGridParserOutput = new DataGridView();
-            labelOutput = new Label();
+            State = new DataGridViewTextBoxColumn();
+            NewState = new DataGridViewTextBoxColumn();
+            Input = new DataGridViewTextBoxColumn();
+            Action = new DataGridViewTextBoxColumn();
             labelParserTrace = new Label();
             tabPageParserStates = new TabPage();
             tbParserStates = new TextBox();
             tabPageNonTerminals = new TabPage();
             tbNonTerminals = new TextBox();
-            State = new DataGridViewTextBoxColumn();
-            StackTop = new DataGridViewTextBoxColumn();
-            Input = new DataGridViewTextBoxColumn();
-            Action = new DataGridViewTextBoxColumn();
-            LC = new DataGridViewTextBoxColumn();
-            ErrorMessage = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPageLexical.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTableSymbol).BeginInit();
@@ -66,7 +62,6 @@
             tabControl2.SuspendLayout();
             TabPageTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridParserTrace).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridParserOutput).BeginInit();
             tabPageParserStates.SuspendLayout();
             tabPageNonTerminals.SuspendLayout();
             SuspendLayout();
@@ -244,8 +239,6 @@
             // TabPageTest
             // 
             TabPageTest.Controls.Add(dataGridParserTrace);
-            TabPageTest.Controls.Add(dataGridParserOutput);
-            TabPageTest.Controls.Add(labelOutput);
             TabPageTest.Controls.Add(labelParserTrace);
             TabPageTest.Location = new Point(4, 24);
             TabPageTest.Name = "TabPageTest";
@@ -258,31 +251,37 @@
             // dataGridParserTrace
             // 
             dataGridParserTrace.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridParserTrace.Columns.AddRange(new DataGridViewColumn[] { State, StackTop, Input, Action });
+            dataGridParserTrace.Columns.AddRange(new DataGridViewColumn[] { State, NewState, Input, Action });
             dataGridParserTrace.Location = new Point(6, 29);
             dataGridParserTrace.Name = "dataGridParserTrace";
             dataGridParserTrace.RowTemplate.Height = 25;
-            dataGridParserTrace.Size = new Size(493, 406);
+            dataGridParserTrace.ScrollBars = ScrollBars.Vertical;
+            dataGridParserTrace.Size = new Size(891, 406);
             dataGridParserTrace.TabIndex = 14;
             // 
-            // dataGridParserOutput
+            // State
             // 
-            dataGridParserOutput.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridParserOutput.Columns.AddRange(new DataGridViewColumn[] { LC, ErrorMessage });
-            dataGridParserOutput.Location = new Point(505, 29);
-            dataGridParserOutput.Name = "dataGridParserOutput";
-            dataGridParserOutput.RowTemplate.Height = 25;
-            dataGridParserOutput.Size = new Size(469, 406);
-            dataGridParserOutput.TabIndex = 16;
+            State.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            State.HeaderText = "State";
+            State.Name = "State";
             // 
-            // labelOutput
+            // NewState
             // 
-            labelOutput.AutoSize = true;
-            labelOutput.Location = new Point(505, 11);
-            labelOutput.Name = "labelOutput";
-            labelOutput.Size = new Size(80, 15);
-            labelOutput.TabIndex = 15;
-            labelOutput.Text = "Parser Output";
+            NewState.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            NewState.HeaderText = "New State";
+            NewState.Name = "NewState";
+            // 
+            // Input
+            // 
+            Input.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Input.HeaderText = "Input";
+            Input.Name = "Input";
+            // 
+            // Action
+            // 
+            Action.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Action.HeaderText = "Action";
+            Action.Name = "Action";
             // 
             // labelParserTrace
             // 
@@ -332,36 +331,6 @@
             tbNonTerminals.Size = new Size(849, 440);
             tbNonTerminals.TabIndex = 1;
             // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.Name = "State";
-            // 
-            // StackTop
-            // 
-            StackTop.HeaderText = "Stack Top";
-            StackTop.Name = "StackTop";
-            // 
-            // Input
-            // 
-            Input.HeaderText = "Input";
-            Input.Name = "Input";
-            // 
-            // Action
-            // 
-            Action.HeaderText = "Action";
-            Action.Name = "Action";
-            // 
-            // LC
-            // 
-            LC.HeaderText = "L.C";
-            LC.Name = "LC";
-            // 
-            // ErrorMessage
-            // 
-            ErrorMessage.HeaderText = "Error Message";
-            ErrorMessage.Name = "ErrorMessage";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -386,7 +355,6 @@
             TabPageTest.ResumeLayout(false);
             TabPageTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridParserTrace).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridParserOutput).EndInit();
             tabPageParserStates.ResumeLayout(false);
             tabPageParserStates.PerformLayout();
             tabPageNonTerminals.ResumeLayout(false);
@@ -410,8 +378,6 @@
         private Label labelSymbols;
         private Label label1;
         private DataGridView dataGridViewTableErrors;
-        private DataGridView dataGridParserOutput;
-        private Label labelOutput;
         private DataGridView dataGridParserTrace;
         private Label labelParserTrace;
         private TabControl tabControl2;
@@ -421,10 +387,8 @@
         private TabPage tabPageNonTerminals;
         private TextBox tbNonTerminals;
         private DataGridViewTextBoxColumn State;
-        private DataGridViewTextBoxColumn StackTop;
+        private DataGridViewTextBoxColumn NewState;
         private DataGridViewTextBoxColumn Input;
         private DataGridViewTextBoxColumn Action;
-        private DataGridViewTextBoxColumn LC;
-        private DataGridViewTextBoxColumn ErrorMessage;
     }
 }

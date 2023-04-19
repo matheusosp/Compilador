@@ -15,9 +15,10 @@ public class LexicalAnalyzer
     private readonly string[] _reservedWords =
     {
             "int","float","char","boolean","void","if","else","for","while",
-            "scanf","println","main","return"
+            "scanf","println","main","return","EOF"
     };
 
+    
     public LexicalAnalyzer()
     {
         _transitionTable = LoadExcel(Path.Combine(Directory.GetCurrentDirectory(), "Tabela de transicoes.csv"));
@@ -31,47 +32,41 @@ public class LexicalAnalyzer
         TableErrors.ClearTable();
     }
 
-    public void AnalyzeCode(string filePathCode)
+    public (int,string) GetNextToken(string code, int index)
     {
-        var reader = new StreamReader(filePathCode);
-        const int blockSize = 8;
         var lexema = "";
         var estado = 0;
-
-        while (!reader.EndOfStream)
+        var token = string.Empty;
+        while (index < code.Length)
         {
-            var buffer = new char[blockSize];
-            var bytesRead = reader.ReadBlock(buffer, 0, blockSize);
-            var i = 0;
-            var linha = new string(buffer, 0, bytesRead);
+            var car = code[index];
+            lexema += car;
+            var coluna = GetColumn(car);
+            int.TryParse(_transitionTable[estado +1, coluna], out estado);
 
-            while (i < linha.Length)
+            if (_endState.ContainsKey(estado))
             {
-                var car = linha[i];
-                lexema += car;
-                var coluna = GetColumn(car);
-                int.TryParse(_transitionTable[estado +1, coluna], out estado);
-
-                if (_endState.ContainsKey(estado))
+                if (_regressionStates.Contains(estado))
                 {
-                    if (_regressionStates.Contains(estado))
-                    {
-                        i -= 1;
-                        lexema = lexema.Substring(0, lexema.Length - 1).Trim();
-                    }
-                    AddLexemeToTable(estado, lexema);
-                    estado = 0;
-                    lexema = "";
+                    index -= 1;
+                    lexema = lexema.Substring(0, lexema.Length - 1).Trim();
                 }
 
-                i += 1;
+                token = AddLexemeToTable(estado, lexema);
+                estado = 0;
+                lexema = "";
+                return (index+=1, token);
                 
             }
+            
+            index += 1;
+            
         }
-        if(_endState.ContainsKey(estado) == false && estado != 0)
-            TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
 
-        reader.Close();
+        //if(_endState.ContainsKey(estado) == false && estado != 0)
+        //    TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
+
+        return (0, token);
     }
 
     private int GetColumn(char caractere) {
@@ -103,21 +98,22 @@ public class LexicalAnalyzer
             columnNumber = firstRow.IndexOf("Outros");
         return columnNumber;
     }
-    private void AddLexemeToTable(int state, string lexema)
+    private string AddLexemeToTable(int state, string lexema)
     {
         if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("ERRO"))
         {
             TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
-            return;
+            return string.Empty;
         }
         if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("COMENTARIO"))
-            return;
+            return string.Empty;
 
         var tokenType = "UNDEFINED";
         if (_reservedWords.Contains(lexema)) 
         {
             tokenType = "PALAVRA RESERVADA";
             TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
+            return lexema;
         }
         else if (_endState.ContainsKey(state)) 
         {
@@ -127,11 +123,24 @@ public class LexicalAnalyzer
             {
                 var symbolValue = AddSymbolToTableAndList(lexema);
                 TableToken.AddToken(new Token { Id = state, Name = symbolValue, Type = tokenType });
+                return tokenType.Replace("*","");
+            }
+            else if (tokenType!.Contains("num"))
+            {
+                var symbolValue = AddSymbolToTableAndList(lexema);
+                TableToken.AddToken(new Token { Id = state, Name = symbolValue, Type = tokenType });
+                return tokenType.Replace("*", "");
             }
             else
+            {
                 TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
+                return lexema;
+            }
+
+            
         }
-        
+
+        return string.Empty;
     }
 
     private string AddSymbolToTableAndList(string lexema)

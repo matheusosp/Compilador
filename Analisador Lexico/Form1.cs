@@ -25,10 +25,9 @@ public partial class Form1 : Form
         {
             UpdateCode();
             var lexicalAnalyzer = new LexicalAnalyzer();
-            lexicalAnalyzer.AnalyzeCode(_filePathCode);
-
             var syntacticAnalyzer = new SyntacticAnalyzer();
-            //syntacticAnalyzer.AnalyzeCode(TableToken.Table);
+
+            //var grammar = new GrammarEx434();
             var grammar = new SimpleCGrammar();
             var language = new LanguageData(grammar);
             var parser = new Parser(language);
@@ -37,9 +36,12 @@ public partial class Form1 : Form
             tbNonTerminals.Text = ParserDataPrinter.PrintNonTerminals(language);
             tbParserStates.Text = ParserDataPrinter.PrintStateList(language);
 
-            parser.Parse(textBoxCode.Text, "<source>");
-            ShowParseTrace(parser);
-            ShowCompilerErrors(parser);
+            var logTrace = syntacticAnalyzer.AnalyzeCode(lexicalAnalyzer, _filePathCode);
+
+            //parser.Parse(textBoxCode.Text, "<source>");
+            //ShowCompilerErrors(parser);
+            //ShowParseTrace(parser);
+            ShowParseTrace(logTrace);
             ClearGrids();
         }
         catch (Exception ex)
@@ -48,13 +50,13 @@ public partial class Form1 : Form
         }
 
     }
-    private void ShowCompilerErrors(Parser parser)
-    {
-        dataGridParserOutput.Rows.Clear();
-        if (parser.Context.CurrentParseTree.ParserMessages.Count == 0) return;
-        foreach (var err in parser.Context.CurrentParseTree.ParserMessages)
-            dataGridParserOutput.Rows.Add(err.Location, err, err.ParserState);
-    }
+    //private void ShowCompilerErrors(Parser parser)
+    //{
+    //    dataGridParserOutput.Rows.Clear();
+    //    if (parser.Context.CurrentParseTree.ParserMessages.Count == 0) return;
+    //    foreach (var err in parser.Context.CurrentParseTree.ParserMessages)
+    //        dataGridParserOutput.Rows.Add(err.Location, err, err.ParserState);
+    //}
     private void ShowParseTrace(Parser parser)
     {
         dataGridParserTrace.Rows.Clear();
@@ -63,6 +65,17 @@ public partial class Form1 : Form
             var index = dataGridParserTrace.Rows.Add(entry.State, entry.StackTop, entry.Input, entry.Message);
             if (entry.IsError)
                 dataGridParserTrace.Rows[^1].DefaultCellStyle.ForeColor = Color.Red;
+        }
+
+    }
+    private void ShowParseTrace(List<(string, string, string, string)> log)
+    {
+        dataGridParserTrace.Rows.Clear();
+        foreach (var entry in log)
+        {
+            var index = dataGridParserTrace.Rows.Add(entry.Item1, entry.Item2, entry.Item3, entry.Item4);
+            //if (entry.IsError)
+            //    dataGridParserTrace.Rows[^1].DefaultCellStyle.ForeColor = Color.Red;
         }
 
     }
@@ -114,6 +127,11 @@ public partial class Form1 : Form
     }
 
     private void tabPageSyntactic_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void dataGridParserOutput_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
 
     }
