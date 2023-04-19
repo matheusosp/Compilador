@@ -12,10 +12,11 @@ public class LexicalAnalyzer
     private readonly string[,] _transitionTable;
     private readonly Dictionary<int, string> _endState;
     private Dictionary<string, int> _symbolsIdentificators;
+    private List<string> _tokenList = new();
     private readonly string[] _reservedWords =
     {
             "int","float","char","boolean","void","if","else","for","while",
-            "scanf","println","main","return","EOF"
+            "scanf","println","main","return"
     };
 
     
@@ -32,41 +33,57 @@ public class LexicalAnalyzer
         TableErrors.ClearTable();
     }
 
-    public (int,string) GetNextToken(string code, int index)
+    public void AnalyzeCode(string filePathCode)
     {
+        var reader = new StreamReader(filePathCode);
+        const int blockSize = 8;
         var lexema = "";
         var estado = 0;
-        var token = string.Empty;
-        while (index < code.Length)
-        {
-            var car = code[index];
-            lexema += car;
-            var coluna = GetColumn(car);
-            int.TryParse(_transitionTable[estado +1, coluna], out estado);
 
-            if (_endState.ContainsKey(estado))
+        while (!reader.EndOfStream)
+        {
+            var buffer = new char[blockSize];
+            var bytesRead = reader.ReadBlock(buffer, 0, blockSize);
+            var i = 0;
+            var linha = new string(buffer, 0, bytesRead);
+
+            while (i < linha.Length)
             {
-                if (_regressionStates.Contains(estado))
+                var car = linha[i];
+                lexema += car;
+                var coluna = GetColumn(car);
+                int.TryParse(_transitionTable[estado + 1, coluna], out estado);
+
+                if (_endState.ContainsKey(estado))
                 {
-                    index -= 1;
-                    lexema = lexema.Substring(0, lexema.Length - 1).Trim();
+                    if (_regressionStates.Contains(estado))
+                    {
+                        i -= 1;
+                        lexema = lexema.Substring(0, lexema.Length - 1).Trim();
+                    }
+                    var token = AddLexemeToTable(estado, lexema);
+                    _tokenList.Add(token);
+                    estado = 0;
+                    lexema = "";
                 }
 
-                token = AddLexemeToTable(estado, lexema);
-                estado = 0;
-                lexema = "";
-                return (index+=1, token);
-                
+                i += 1;
+
             }
-            
-            index += 1;
-            
         }
+        if (_endState.ContainsKey(estado) == false && estado != 0)
+            TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
 
-        //if(_endState.ContainsKey(estado) == false && estado != 0)
-        //    TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
+        reader.Close();
+    }
 
-        return (0, token);
+    public string GetNextToken()
+    {
+        if (_tokenList.Count == 0)
+            return "EOF";
+        var token = _tokenList[0];
+        _tokenList.RemoveAt(0);
+        return token;
     }
 
     private int GetColumn(char caractere) {

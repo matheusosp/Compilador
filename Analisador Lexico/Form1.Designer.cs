@@ -131,7 +131,7 @@
             tabPageLexical.Padding = new Padding(3);
             tabPageLexical.Size = new Size(1034, 521);
             tabPageLexical.TabIndex = 0;
-            tabPageLexical.Text = "Analizador Lexico";
+            tabPageLexical.Text = "Analisador Lexico";
             tabPageLexical.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -221,7 +221,7 @@
             tabPageSyntactic.Padding = new Padding(3);
             tabPageSyntactic.Size = new Size(1034, 521);
             tabPageSyntactic.TabIndex = 1;
-            tabPageSyntactic.Text = "Analizador Sintatico";
+            tabPageSyntactic.Text = "Analisador Sintatico";
             tabPageSyntactic.UseVisualStyleBackColor = true;
             tabPageSyntactic.Click += tabPageSyntactic_Click;
             // 
