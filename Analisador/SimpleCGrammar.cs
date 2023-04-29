@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Analisador_Lexico;
 
@@ -15,7 +17,6 @@ public class SimpleCGrammar : Grammar
     public SimpleCGrammar()
     {
         var id = new IdentifierTerminal("id");
-        var text = new StringLiteral("texto", "\"", StringOptions.AllowsAllEscapes);
 
         var PROGRAMA = new NonTerminal("PROGRAMA");
         var SECAOFUNCOES = new NonTerminal("SECAOFUNCOES");
@@ -69,51 +70,51 @@ public class SimpleCGrammar : Grammar
         PROGRAMA.Rule = SECAOFUNCOES + PRINCIPAL;
         SECAOFUNCOES.Rule = LISTAFUNCOES | Empty;
         LISTAFUNCOES.Rule = DECFUNCAO | LISTAFUNCOES + DECFUNCAO;
-        DECFUNCAO.Rule = TIPORETORNO + id + "(" + PARAMETROS + ")" + BLOCO;
-        TIPORETORNO.Rule = TIPO | "void";
+        DECFUNCAO.Rule = TIPORETORNO + id + ToTerm("(") + PARAMETROS + ToTerm(")") + BLOCO;
+        TIPORETORNO.Rule = TIPO | ToTerm("void");
         TIPO.Rule = TIPOBASE + DIMENSAO ;
-        TIPOBASE.Rule = ToTerm("char") | "float" | "int" | "boolean";
-        DIMENSAO.Rule = DIMENSAO + ToTerm("[") + "num_int" + "]" | Empty; 
+        TIPOBASE.Rule = ToTerm("char") | ToTerm("float") | ToTerm("int") | ToTerm("boolean");
+        DIMENSAO.Rule = DIMENSAO + ToTerm("[") + ToTerm("num_int") + ToTerm("]") | Empty; 
         PARAMETROS.Rule = LISTAPARAMETROS | Empty;
-        LISTAPARAMETROS.Rule = TIPO + id | LISTAPARAMETROS + "," + TIPO + id;
-        PRINCIPAL.Rule = "main" + ToTerm("(") + ")" + BLOCO;
-        BLOCO.Rule = ToTerm("{") + SECAOVARIAVEIS + SECAOCOMANDOS + "}";
+        LISTAPARAMETROS.Rule = TIPO + id | LISTAPARAMETROS + ToTerm(",") + TIPO + id;
+        PRINCIPAL.Rule = ToTerm("main") + ToTerm("(") + ToTerm(")") + BLOCO;
+        BLOCO.Rule = ToTerm("{") + SECAOVARIAVEIS + SECAOCOMANDOS + ToTerm("}");
         SECAOVARIAVEIS.Rule = LISTAVARIAVEIS | Empty;
-        LISTAVARIAVEIS.Rule = TIPO + LISTAID + ToTerm(";") | LISTAVARIAVEIS + TIPO + LISTAID + ";";
-        LISTAID.Rule = id | LISTAID + "," + id;
+        LISTAVARIAVEIS.Rule = TIPO + LISTAID + ToTerm(";") | LISTAVARIAVEIS + TIPO + LISTAID + ToTerm(";");
+        LISTAID.Rule = id | LISTAID + ToTerm(",") + id;
         SECAOCOMANDOS.Rule = LISTACOMANDOS | Empty;
         LISTACOMANDOS.Rule = COMANDO | LISTACOMANDOS + COMANDO;
         COMANDO.Rule = LEITURA | ESCRITA | ATRIBUIÇAO | FUNCAO | SELECAO | ENQUANTO | RETORNO;
-        LEITURA.Rule = "scanf" + "(" + LISTATERMOLEITURA + ")" + ";";
-        LISTATERMOLEITURA.Rule = TERMOLEITURA | LISTATERMOLEITURA + "," + TERMOLEITURA;
+        LEITURA.Rule = ToTerm("scanf") + ToTerm("(") + LISTATERMOLEITURA + ToTerm(")") + ToTerm(";");
+        LISTATERMOLEITURA.Rule = TERMOLEITURA | LISTATERMOLEITURA + ToTerm(",") + TERMOLEITURA;
         TERMOLEITURA.Rule = id + DIMENSAO2;
-        DIMENSAO2.Rule = ToTerm("[") + EXPR_ADITIVA + "]" | Empty;
-        ESCRITA.Rule = "println" + ToTerm("(") + LISTATERMOESCRITA + ")" + ";";
-        LISTATERMOESCRITA.Rule = TERMOESCRITA | LISTATERMOESCRITA + "," + TERMOESCRITA;
-        TERMOESCRITA.Rule = id + DIMENSAO2 | CONSTANTE | text;
-        SELECAO.Rule = "if" + "(" + EXPRESSAO + ")" + BLOCO + SENAO;
-        SENAO.Rule = "else" + BLOCO | Empty;
-        ENQUANTO.Rule = "while" + "(" + EXPRESSAO + ")" + BLOCO;
-        ATRIBUIÇAO.Rule = id + "=" + COMPLEMENTO + ";";
+        DIMENSAO2.Rule = DIMENSAO2 + ToTerm("[") + EXPR_ADITIVA + ToTerm("]") | Empty;
+        ESCRITA.Rule = ToTerm("println") + ToTerm("(") + LISTATERMOESCRITA + ToTerm(")") + ToTerm(";");
+        LISTATERMOESCRITA.Rule = TERMOESCRITA | LISTATERMOESCRITA + ToTerm(",") + TERMOESCRITA;
+        TERMOESCRITA.Rule = id + DIMENSAO2 | CONSTANTE | ToTerm("TEXTO");
+        SELECAO.Rule = ToTerm("if") + ToTerm("(") + EXPRESSAO + ToTerm(")") + BLOCO + SENAO;
+        SENAO.Rule = ToTerm("else") + BLOCO | Empty;
+        ENQUANTO.Rule = ToTerm("while") + ToTerm("(") + EXPRESSAO + ToTerm(")") + BLOCO;
+        ATRIBUIÇAO.Rule = id + ToTerm("=") + COMPLEMENTO + ToTerm(";");
         COMPLEMENTO.Rule = EXPRESSAO | FUNCAO;
-        FUNCAO.Rule = ToTerm("func") + id + "(" + ARGUMENTOS + ")";
+        FUNCAO.Rule = ToTerm("func") + id + ToTerm("(") + ARGUMENTOS + ToTerm(")");
         ARGUMENTOS.Rule = LISTAARGUMENTOS | Empty;
-        LISTAARGUMENTOS.Rule = EXPRESSAO | LISTAARGUMENTOS + "," + EXPRESSAO;
-        RETORNO.Rule = "return" + EXPRESSAO + ";";
+        LISTAARGUMENTOS.Rule = EXPRESSAO | LISTAARGUMENTOS + ToTerm(",") + EXPRESSAO;
+        RETORNO.Rule = ToTerm("return") + EXPRESSAO + ToTerm(";");
         EXPRESSAO.Rule = EXPR_OU;
         EXPR_OU.Rule = EXPR_E | EXPR_OU + ToTerm("||") + EXPR_E; 
         EXPR_E.Rule = EXPR_RELACIONAL | EXPR_E + ToTerm("&&") + EXPR_RELACIONAL;
         EXPR_RELACIONAL.Rule = EXPR_ADITIVA | EXPR_ADITIVA + COMP + EXPR_ADITIVA;
         EXPR_ADITIVA.Rule = EXPR_MULTIPLICATIVA | EXPR_ADITIVA + OP_ADITIVO + EXPR_MULTIPLICATIVA;
-        OP_ADITIVO.Rule = ToTerm("+") | "-";
+        OP_ADITIVO.Rule = ToTerm("+") | ToTerm("-");
         EXPR_MULTIPLICATIVA.Rule = FATOR | EXPR_MULTIPLICATIVA + OP_MULTIPLICATIVO + FATOR;
-        OP_MULTIPLICATIVO.Rule = ToTerm("*") | "/" | "%";
-        FATOR.Rule = SINAL + id + DIMENSAO2 | SINAL + CONSTANTE | text | "!" + FATOR | "(" + EXPRESSAO + ")";
-        CONSTANTE.Rule = ToTerm("num_int") | "num_dec";
-        SINAL.Rule = ToTerm("+") | "-" | Empty; 
+        OP_MULTIPLICATIVO.Rule = ToTerm("*") | ToTerm("/") | ToTerm("%");
+        FATOR.Rule = SINAL + id + DIMENSAO2 | SINAL + CONSTANTE | ToTerm("TEXTO") | ToTerm("!") + FATOR | ToTerm("(") + EXPRESSAO + ToTerm(")");
+        CONSTANTE.Rule = ToTerm("num_int") | ToTerm("num_dec");
+        SINAL.Rule = ToTerm("+") | ToTerm("-") | Empty; 
         
 
-        COMP.Rule = ToTerm("<") | "==" | "!=" | ">" | "<=" | ">=";
+        COMP.Rule = ToTerm("<") | ToTerm("==") | ToTerm("!=") | ToTerm(">") | ToTerm("<=") | ToTerm(">=");
         this.MarkReservedWords(
             "int", "float", "char", "boolean", "void", "if", "else", "for", "while",
             "scanf", "println", "main", "return"

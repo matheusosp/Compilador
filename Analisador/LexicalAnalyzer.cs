@@ -16,7 +16,7 @@ public class LexicalAnalyzer
     private readonly string[] _reservedWords =
     {
             "int","float","char","boolean","void","if","else","for","while",
-            "scanf","println","main","return"
+            "scanf","println","main","return","func"
     };
 
     
@@ -144,9 +144,13 @@ public class LexicalAnalyzer
             }
             else if (tokenType!.Contains("num"))
             {
-                var symbolValue = AddSymbolToTableAndList(lexema);
-                TableToken.AddToken(new Token { Id = state, Name = symbolValue, Type = tokenType });
+                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
                 return tokenType.Replace("*", "");
+            }
+            else if (tokenType!.Contains("TEXTO"))
+            {
+                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
+                return tokenType;
             }
             else
             {
