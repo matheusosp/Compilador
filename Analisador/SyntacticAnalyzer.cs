@@ -48,11 +48,11 @@ public class SyntacticAnalyzer
 
                 state = stack.Peek();
 
-                var stateGOTO = ParserTable.GOTO.First(a => a.Item1 == state);
                 var lhsSymbol = ParserTable.LHS.First(l => l.Item1 == action.NewState);
+                var stateGOTO = ParserTable.GOTO.First(a => a.Item1 == state);
                 var gotoState = stateGOTO.Item2.First(g => g.Item1 == lhsSymbol.Item2);
 
-                stack.Push(int.Parse(new string(gotoState.Item2.Where(char.IsDigit).ToArray())));
+                stack.Push(int.Parse(gotoState.Item2));
 
                 var productionString = ParserTable.ProductionToString[int.Parse(new string(action.NewState.Where(char.IsDigit).ToArray()))];
                 logTrace.Add((state.ToString(), action.NewState, currentToken, "reduce " + productionString));

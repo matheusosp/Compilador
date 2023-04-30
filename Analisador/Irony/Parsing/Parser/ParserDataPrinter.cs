@@ -30,7 +30,7 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
             foreach (var state in language.ParserData.States)
             {
                 var stateActions = new List<StateAction>();
-                var stateGOTO = new List<(string, string, int)>();
+                var stateGOTO = new List<(string, string)>();
                 sb.Append("State " + state.Name);
                 var stateNumber = int.Parse(new string(state.Name.Where(char.IsDigit).ToArray()));
                 if (state.BuilderData.IsInadequate) sb.Append(" (Inadequate)");
@@ -134,8 +134,7 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                             stateGOTO.Add(
                                 (
                                     key.Name,
-                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
-                                    1
+                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray())
                                 )
                             );
                             stateActions.Add(
