@@ -16,7 +16,6 @@ public class SimpleCGrammar : Grammar
 {
     public SimpleCGrammar()
     {
-
         var PROGRAMA = new NonTerminal("PROGRAMA");
         var SECAOFUNCOES = new NonTerminal("SECAOFUNCOES");
         var LISTAFUNCOES = new NonTerminal("LISTAFUNCOES");

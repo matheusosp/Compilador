@@ -83,7 +83,7 @@ public class LexicalAnalyzer
             return "EOF";
         var token = _tokenList[0];
         _tokenList.RemoveAt(0);
-        return token;
+        return token.Replace(" ", "").Replace("\r", "").Replace("\n", "");
     }
 
     private int GetColumn(char caractere) {

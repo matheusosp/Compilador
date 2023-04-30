@@ -9,7 +9,7 @@ namespace Analisador_Lexico;
 
 public static class ParserTable
 {
-    public static List<(int stateNumber, List<(string, string, int, int)> stateActions)> ACTION = new();
+    public static List<(int stateNumber, List<StateAction> stateActions)> ACTION = new();
     public static List<(int, List<(string, string, int)>)> GOTO = new ();
     public static List<(string, string)> LHS = new();
     public static List<string> ProductionToString = new();

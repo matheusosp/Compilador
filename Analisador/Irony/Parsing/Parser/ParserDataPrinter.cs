@@ -11,6 +11,7 @@
 #endregion
 
 using System.Text;
+using Analisador_Lexico.Domain;
 using Analisador_Lexico.Irony.Parsing.Data;
 using Analisador_Lexico.Irony.Parsing.Data.Construction;
 using Analisador_Lexico.Irony.Parsing.Grammar;
@@ -23,13 +24,12 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
 
         public static string PrintStateList(LanguageData language)
         {
-            StringBuilder sb = new StringBuilder();
-            var statesAction = new List<(int, List<(string, string,int, int)>)>();
-            var statesGOTO = new List<(int, List<(string, string, int)>)>();
+            var sb = new StringBuilder();
+            var statesAction = new List<(int, List<StateAction>)>();
             var tableProductions = GetNonTerminals(language);
-            foreach (ParserState state in language.ParserData.States)
+            foreach (var state in language.ParserData.States)
             {
-                var stateActions = new List<(string,string, int, int)>();
+                var stateActions = new List<StateAction>();
                 var stateGOTO = new List<(string, string, int)>();
                 sb.Append("State " + state.Name);
                 var stateNumber = int.Parse(new string(state.Name.Where(char.IsDigit).ToArray()));
@@ -51,7 +51,7 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                 if (state.BuilderData.ReduceItems.Count > 0)
                 {
                     sb.AppendLine("  Reduce items:");
-                    foreach (LRItem item in state.BuilderData.ReduceItems)
+                    foreach (var item in state.BuilderData.ReduceItems)
                     {
                         var sItem = item.ToString();
                         if (state.DefaultAction != null)
@@ -60,11 +60,11 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                 string.Compare(p.Item2, sItem.Replace("·", ""), StringComparison.InvariantCultureIgnoreCase) == 0);
 
                             stateActions.Add(
-                                (
+                                new StateAction(
                                     sItem,
-                                    production.Item1,
-                                    production.Item3,
-                                    -1
+                                          StateAction.ActionType.Reduce,
+                                          production.Item3, 
+                                  production.Item1
                                 )
                             );
                         }
@@ -74,14 +74,16 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                             sItem += " [" + item.Lookaheads.ToString() + "]";
                             foreach (var head in item.Lookaheads)
                             {
-                                var production = tableProductions.First(p =>
-                                    string.Compare(p.Item2, item.Core.Production.ToString().Replace("·", ""), StringComparison.InvariantCultureIgnoreCase) == 0);
+                                var production = tableProductions
+                                    .First(p =>
+                                        string.Compare(p.Item2, item.Core.Production
+                                                .ToString().Replace("·", ""), StringComparison.InvariantCultureIgnoreCase) == 0);
                                 stateActions.Add(
-                                    (
-                                        head.Name,
-                                        production.Item1,
-                                        production.Item3,
-                                        - 1
+                                    new StateAction(
+                                          head.Name,
+                                                StateAction.ActionType.Reduce,
+                                                production.Item3,
+                                        production.Item1
                                     )
                                 );
                             }
@@ -93,19 +95,19 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                     }
                 }
                 sb.Append("  Transitions: ");
-                bool atFirst = true;
-                foreach (BnfTerm key in state.Actions.Keys)
+                var atFirst = true;
+                foreach (var key in state.Actions.Keys)
                 {
                     var acceptAction = state.Actions[key] as AcceptParserAction;
                     if (acceptAction != null)
                     {
                         stateActions.Add(
-                            (
-                                key.Name,
-                                "Accept",
-                                0,
-                                0
-                            )
+                            new StateAction(
+                                    key.Name,
+                                    StateAction.ActionType.Accept,
+                                    0,
+                                    "Accept"
+                                )
                         );
                     }
                     var action = state.Actions[key] as ShiftParserAction;
@@ -116,34 +118,35 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                     sb.Append(key.ToString());
                     sb.Append("->");
                     sb.Append(action.NewState.Name);
-                    if (key is Terminal)
+                    switch (key)
                     {
-                        stateActions.Add(
+                        case Terminal:
+                            stateActions.Add(
+                                new StateAction(
+                                    key.Name,
+                                    StateAction.ActionType.Shift,
+                                    0,
+                                    "S" + new string(action.NewState.Name.Where(char.IsDigit).ToArray())
+                                )
+                            );
+                            break;
+                        case NonTerminal:
+                            stateGOTO.Add(
                                 (
                                     key.Name,
-                                    "S" + new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
-                                    0,
+                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
                                     1
                                 )
                             );
-                    }
-                    else if (key is NonTerminal)
-                    {
-                        stateGOTO.Add(
-                            (
-                                key.Name,
-                                new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
-                                1
-                            )
-                        );
-                        stateActions.Add(
-                            (
-                                key.Name,
-                                new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
-                                0,
-                                1
-                            )
-                        );
+                            stateActions.Add(
+                                new StateAction(
+                                    key.Name,
+                                    StateAction.ActionType.Shift,
+                                    0,
+                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray())
+                                )
+                            );
+                            break;
                     }
 
                 }
@@ -156,12 +159,6 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
             foreach (var i in statesAction)
             {
                 ParserTable.ACTION.Add((i.Item1, i.Item2));
-                Console.Write($"State {i.Item1}: actions: (");
-                foreach (var j in i.Item2)
-                {
-                    Console.Write($" {j.Item1} newStates: {j.Item2}");
-                }
-                Console.WriteLine(" )");
             }
             return sb.ToString();
         }
