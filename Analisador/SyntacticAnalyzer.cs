@@ -17,6 +17,7 @@ public class SyntacticAnalyzer
 
         while (true)
         {
+            var stackString = string.Join(" ", stack.ToArray().Reverse());
             var state = stack.Peek();
             var stateTable = ParserTable.ACTION.First(a => a.Item1 == state);
             
@@ -28,14 +29,14 @@ public class SyntacticAnalyzer
 
             if(action == null)
             {
-                logTrace.Add((state.ToString(), "", "", "Erro de sintaxe. Token atual: " + currentToken));
+                logTrace.Add((stackString, "", "", "Erro de sintaxe. Token atual: " + currentToken));
                 break;
             }
 
             if (action.Type == ActionType.Shift)
             {
                 stack.Push(int.Parse(new string(action.NewState.Where(char.IsDigit).ToArray())));
-                logTrace.Add((state.ToString(),action.NewState,currentToken, "shift " + action.Symbol));
+                logTrace.Add((stackString, action.NewState, currentToken, "shift " + action.Symbol));
                 currentToken = lexicalAnalyzer.GetNextToken();
             }
             if (action.Type == ActionType.Reduce)
@@ -55,11 +56,11 @@ public class SyntacticAnalyzer
                 stack.Push(int.Parse(gotoState.Item2));
 
                 var productionString = ParserTable.ProductionToString[int.Parse(new string(action.NewState.Where(char.IsDigit).ToArray()))];
-                logTrace.Add((state.ToString(), action.NewState, currentToken, "reduce " + productionString));
+                logTrace.Add((stackString, action.NewState, currentToken, "reduce " + productionString));
             }
             else if (action.Type == ActionType.Accept)
             {
-                logTrace.Add((state.ToString(), "", currentToken, action.NewState));
+                logTrace.Add((stackString, "", currentToken, action.NewState));
                 break;
             }
         }

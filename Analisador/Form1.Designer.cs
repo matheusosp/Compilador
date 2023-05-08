@@ -44,15 +44,15 @@
             tabControl2 = new TabControl();
             TabPageTest = new TabPage();
             dataGridParserTrace = new DataGridView();
-            State = new DataGridViewTextBoxColumn();
-            NewState = new DataGridViewTextBoxColumn();
-            Input = new DataGridViewTextBoxColumn();
-            Action = new DataGridViewTextBoxColumn();
             labelParserTrace = new Label();
             tabPageParserStates = new TabPage();
             tbParserStates = new TextBox();
             tabPageNonTerminals = new TabPage();
             tbNonTerminals = new TextBox();
+            Pilha = new DataGridViewTextBoxColumn();
+            NewState = new DataGridViewTextBoxColumn();
+            Input = new DataGridViewTextBoxColumn();
+            Action = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPageLexical.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTableSymbol).BeginInit();
@@ -251,37 +251,13 @@
             // dataGridParserTrace
             // 
             dataGridParserTrace.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridParserTrace.Columns.AddRange(new DataGridViewColumn[] { State, NewState, Input, Action });
+            dataGridParserTrace.Columns.AddRange(new DataGridViewColumn[] { Pilha, NewState, Input, Action });
             dataGridParserTrace.Location = new Point(6, 29);
             dataGridParserTrace.Name = "dataGridParserTrace";
             dataGridParserTrace.RowTemplate.Height = 25;
             dataGridParserTrace.ScrollBars = ScrollBars.Vertical;
             dataGridParserTrace.Size = new Size(891, 406);
             dataGridParserTrace.TabIndex = 14;
-            // 
-            // State
-            // 
-            State.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            State.HeaderText = "State";
-            State.Name = "State";
-            // 
-            // NewState
-            // 
-            NewState.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            NewState.HeaderText = "New State";
-            NewState.Name = "NewState";
-            // 
-            // Input
-            // 
-            Input.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Input.HeaderText = "Input";
-            Input.Name = "Input";
-            // 
-            // Action
-            // 
-            Action.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Action.HeaderText = "Action";
-            Action.Name = "Action";
             // 
             // labelParserTrace
             // 
@@ -330,6 +306,30 @@
             tbNonTerminals.ScrollBars = ScrollBars.Vertical;
             tbNonTerminals.Size = new Size(849, 440);
             tbNonTerminals.TabIndex = 1;
+            // 
+            // Pilha
+            // 
+            Pilha.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Pilha.HeaderText = "Pilha";
+            Pilha.Name = "Pilha";
+            // 
+            // NewState
+            // 
+            NewState.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            NewState.HeaderText = "New State";
+            NewState.Name = "NewState";
+            // 
+            // Input
+            // 
+            Input.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Input.HeaderText = "Input";
+            Input.Name = "Input";
+            // 
+            // Action
+            // 
+            Action.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Action.HeaderText = "Action";
+            Action.Name = "Action";
             // 
             // Form1
             // 
@@ -386,7 +386,7 @@
         private TextBox tbParserStates;
         private TabPage tabPageNonTerminals;
         private TextBox tbNonTerminals;
-        private DataGridViewTextBoxColumn State;
+        private DataGridViewTextBoxColumn Pilha;
         private DataGridViewTextBoxColumn NewState;
         private DataGridViewTextBoxColumn Input;
         private DataGridViewTextBoxColumn Action;
