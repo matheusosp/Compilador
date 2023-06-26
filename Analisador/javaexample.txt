@@ -1,10 +1,5 @@
-﻿main() {
-  int x,y, resultado;	
-  x = 5;
-  y = 10;
-  resultado = x + y;
-  
-  println(resultado);
-
-  return 0;
-} 
+﻿main(){
+    int x, y;
+    scanf(x);
+    y = 2 * x;
+}

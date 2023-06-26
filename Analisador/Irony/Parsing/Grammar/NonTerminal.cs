@@ -43,7 +43,32 @@ namespace Analisador_Lexico.Irony.Parsing.Grammar {
 
     //A template for representing ParseTreeNode in the parse tree. Can contain '#{i}' fragments referencing 
     // child nodes by index
-    public string NodeCaptionTemplate;
+    private string _nodeCaptionTemplate;
+    public string NodeCaptionTemplate
+    {
+      get
+      {
+        // Disparar o evento quando a propriedade é lida
+        return _nodeCaptionTemplate;
+      }
+      set => _nodeCaptionTemplate = value;
+    }
+    //public event EventHandler<SemanticEventArgs> OnExecuted;
+    public FuncaoDelegate AcaoPraExecutar { get; set; }
+    public delegate void FuncaoDelegate(params string[] valores);
+    public void ExecutarFunção(params string[] valores)
+    {
+      // Verificar se a função está definida
+      if (AcaoPraExecutar != null)
+      {
+        // Chamar a função definida com os parâmetros especificados
+        AcaoPraExecutar(valores);
+      }
+    }
+    // public void ExecutarFunção(params string[] valores)
+    // {
+    //   OnExecuted?.Invoke(this, new SemanticEventArgs(valores));
+    // }
     //Converted template with index list
     private string _convertedTemplate;
     private IntList _captionParameters;

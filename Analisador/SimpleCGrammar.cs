@@ -20,7 +20,9 @@ public class SimpleCGrammar : Grammar
         var SECAOFUNCOES = new NonTerminal("SECAOFUNCOES");
         var LISTAFUNCOES = new NonTerminal("LISTAFUNCOES");
         var PRINCIPAL = new NonTerminal("PRINCIPAL");
+        var CONTEXT2 = new NonTerminal("CONTEXT2"); 
         var DECFUNCAO = new NonTerminal("DECFUNCAO");
+        var CONTEXT1 = new NonTerminal("CONTEXT1");  
         var TIPORETORNO = new NonTerminal("TIPORETORNO");
         var PARAMETROS = new NonTerminal("PARAMETROS");
         var TIPO = new NonTerminal("TIPO");
@@ -65,24 +67,27 @@ public class SimpleCGrammar : Grammar
 
         this.Root = PROGRAMA;
 
+        //PROGRAMA.AcaoPraExecutar = Funcao1;
         PROGRAMA.Rule = SECAOFUNCOES + PRINCIPAL;
         SECAOFUNCOES.Rule = LISTAFUNCOES | Empty;
         LISTAFUNCOES.Rule = DECFUNCAO | LISTAFUNCOES + DECFUNCAO;
-        DECFUNCAO.Rule = TIPORETORNO + ToTerm("ID") + ToTerm("(") + PARAMETROS + ToTerm(")") + BLOCO;
+        DECFUNCAO.Rule = TIPORETORNO + ToTerm("ID") + CONTEXT1 + ToTerm("(") + PARAMETROS + ToTerm(")") + BLOCO;
+        CONTEXT1.Rule = Empty;
         TIPORETORNO.Rule = TIPO | ToTerm("void");
         TIPO.Rule = TIPOBASE + DIMENSAO ;
         TIPOBASE.Rule = ToTerm("char") | ToTerm("float") | ToTerm("int") | ToTerm("boolean");
         DIMENSAO.Rule = DIMENSAO + ToTerm("[") + ToTerm("num_int") + ToTerm("]") | Empty; 
         PARAMETROS.Rule = LISTAPARAMETROS | Empty;
         LISTAPARAMETROS.Rule = TIPO + ToTerm("ID") | LISTAPARAMETROS + ToTerm(",") + TIPO + ToTerm("ID");
-        PRINCIPAL.Rule = ToTerm("main") + ToTerm("(") + ToTerm(")") + BLOCO;
+        PRINCIPAL.Rule = CONTEXT2 + ToTerm("main") + ToTerm("(") + ToTerm(")") + BLOCO;
+        CONTEXT2.Rule = Empty;
         BLOCO.Rule = ToTerm("{") + SECAOVARIAVEIS + SECAOCOMANDOS + ToTerm("}");
         SECAOVARIAVEIS.Rule = LISTAVARIAVEIS | Empty;
         LISTAVARIAVEIS.Rule = TIPO + LISTAID + ToTerm(";") | LISTAVARIAVEIS + TIPO + LISTAID + ToTerm(";");
         LISTAID.Rule = ToTerm("ID") | LISTAID + ToTerm(",") + ToTerm("ID");
         SECAOCOMANDOS.Rule = LISTACOMANDOS | Empty;
         LISTACOMANDOS.Rule = COMANDO | LISTACOMANDOS + COMANDO;
-        COMANDO.Rule = LEITURA | ESCRITA | ATRIBUIÇAO | FUNCAO | SELECAO | ENQUANTO | RETORNO;
+        COMANDO.Rule = LEITURA | ESCRITA | ATRIBUIÇAO | FUNCAO | SELECAO | ENQUANTO | RETORNO ;
         LEITURA.Rule = ToTerm("scanf") + ToTerm("(") + LISTATERMOLEITURA + ToTerm(")") + ToTerm(";");
         LISTATERMOLEITURA.Rule = TERMOLEITURA | LISTATERMOLEITURA + ToTerm(",") + TERMOLEITURA;
         TERMOLEITURA.Rule = ToTerm("ID") + DIMENSAO2;
@@ -109,14 +114,19 @@ public class SimpleCGrammar : Grammar
         OP_MULTIPLICATIVO.Rule = ToTerm("*") | ToTerm("/") | ToTerm("%");
         FATOR.Rule = SINAL + ToTerm("ID") + DIMENSAO2 | SINAL + CONSTANTE | ToTerm("TEXTO") | ToTerm("!") + FATOR | ToTerm("(") + EXPRESSAO + ToTerm(")");
         CONSTANTE.Rule = ToTerm("num_int") | ToTerm("num_dec");
-        SINAL.Rule = ToTerm("+") | ToTerm("-") | Empty; 
-        
-
+        SINAL.Rule = ToTerm("+") | ToTerm("-") | Empty;
         COMP.Rule = ToTerm("<") | ToTerm("==") | ToTerm("!=") | ToTerm(">") | ToTerm("<=") | ToTerm(">=");
+        
         this.MarkReservedWords(
             "int", "float", "char", "boolean", "void", "if", "else", "for", "while",
             "scanf", "println", "main", "return", "func"
             );
         
+    }
+
+    public static void Funcao1(params string[] valores)
+    {
+        if (valores.Length > 1)
+            throw new Exception("aaaaaaaaaaaaa");
     }
 }

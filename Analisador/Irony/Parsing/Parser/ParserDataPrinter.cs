@@ -13,7 +13,6 @@
 using System.Text;
 using Analisador_Lexico.Domain;
 using Analisador_Lexico.Irony.Parsing.Data;
-using Analisador_Lexico.Irony.Parsing.Data.Construction;
 using Analisador_Lexico.Irony.Parsing.Grammar;
 using Analisador_Lexico.Irony.Parsing.Parser.ParserActions;
 using Analisador_Lexico.Irony.Parsing.Terminals;
@@ -64,7 +63,8 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                     sItem,
                                           StateAction.ActionType.Reduce,
                                           production.Item3, 
-                                  production.Item1
+                                  production.Item1,
+                                         production.Item4
                                 )
                             );
                         }
@@ -83,7 +83,8 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                           head.Name,
                                                 StateAction.ActionType.Reduce,
                                                 production.Item3,
-                                        production.Item1
+                                        production.Item1,
+                                               production.Item4
                                     )
                                 );
                             }
@@ -106,7 +107,8 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                     key.Name,
                                     StateAction.ActionType.Accept,
                                     0,
-                                    "Accept"
+                                    "Accept",
+                                    null
                                 )
                         );
                     }
@@ -126,7 +128,8 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                     key.Name,
                                     StateAction.ActionType.Shift,
                                     0,
-                                    "S" + new string(action.NewState.Name.Where(char.IsDigit).ToArray())
+                                    "S" + new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
+                                    null
                                 )
                             );
                             break;
@@ -142,7 +145,8 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
                                     key.Name,
                                     StateAction.ActionType.Shift,
                                     0,
-                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray())
+                                    new string(action.NewState.Name.Where(char.IsDigit).ToArray()),
+                                    null
                                 )
                             );
                             break;
@@ -161,16 +165,18 @@ namespace Analisador_Lexico.Irony.Parsing.Parser {
             }
             return sb.ToString();
         }
-        public static List<(string, string, int)> GetNonTerminals(LanguageData language)
+        public static List<(string, string, int, NonTerminal.FuncaoDelegate)> GetNonTerminals(LanguageData language)
         {
             var ntList = language.GrammarData.NonTerminals.ToList();
             //ntList.Sort((x, y) => string.Compare(x.Name, y.Name));
-            var tableProductions = new List<(string, string, int)>();
+            var tableProductions = new List<(string, string, int, NonTerminal.FuncaoDelegate)>();
             var index = 0;
             foreach (var pr in ntList.SelectMany(nt => nt.Productions))
             {
                 ParserTable.ProductionToString.Add(pr.ToString());
-                tableProductions.Add(("r" + index, pr.ToString(), pr.RValues.Count));
+                if(pr.LValue.AcaoPraExecutar != null)
+                    pr.LValue.ExecutarFunção("BBBBBBBBBBBBBBBBBBBBBBBB");
+                tableProductions.Add(("r" + index, pr.ToString(), pr.RValues.Count, pr.LValue.AcaoPraExecutar));
                 ParserTable.LHS.Add(("r" + index, pr.LValue.ToString()));
                 index++;
             }

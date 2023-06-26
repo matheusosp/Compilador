@@ -12,7 +12,7 @@ public class LexicalAnalyzer
     private readonly string[,] _transitionTable;
     private readonly Dictionary<int, string> _endState;
     private Dictionary<string, int> _symbolsIdentificators;
-    private List<string> _tokenList = new();
+    private List<Token?> _tokenList = new();
     private readonly string[] _reservedWords =
     {
             "int","float","char","boolean","void","if","else","for","while",
@@ -77,13 +77,13 @@ public class LexicalAnalyzer
         reader.Close();
     }
 
-    public string GetNextToken()
+    public Token? GetNextToken()
     {
         if (_tokenList.Count == 0)
-            return "EOF";
+            return new Token { Id = 0, Name = "EOF", Type = "EOF" };;
         var token = _tokenList[0];
         _tokenList.RemoveAt(0);
-        return token.Replace(" ", "").Replace("\r", "").Replace("\n", "");
+        return token;
     }
 
     private int GetColumn(char caractere) {
@@ -115,53 +115,60 @@ public class LexicalAnalyzer
             columnNumber = firstRow.IndexOf("Outros");
         return columnNumber;
     }
-    private string AddLexemeToTable(int state, string lexema)
+    private Token? AddLexemeToTable(int state, string lexema)
     {
+        lexema = lexema.Replace(" ", "").Replace("\r", "").Replace("\n", "");
         if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("ERRO"))
         {
             TableErrors.AddError(new Error { ErrorMessage = $"Error: {lexema}" });
-            return string.Empty;
+            return null;
         }
         if (_endState.GetValueOrDefault(state)!.ToUpper().Contains("COMENTARIO"))
-            return string.Empty;
+            return null;
 
         var tokenType = "UNDEFINED";
         if (_reservedWords.Contains(lexema)) 
         {
             tokenType = "PALAVRA RESERVADA";
-            TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
-            return lexema;
+            var token = new Token { Id = state, Name = lexema, Type = tokenType };
+            TableToken.AddToken(token);
+            return token;
         }
-        else if (_endState.ContainsKey(state)) 
+
+        if (_endState.ContainsKey(state)) 
         {
-            tokenType = _endState.GetValueOrDefault(state);
+            tokenType = _endState.GetValueOrDefault(state)?.Replace(" ", "").Replace("\r", "").Replace("\n", "");
 
             if (tokenType!.Contains("ID")) 
             {
                 var symbolValue = AddSymbolToTableAndList(lexema);
-                TableToken.AddToken(new Token { Id = state, Name = symbolValue, Type = tokenType });
-                return tokenType.Replace("*","");
+                var token = new Token { Id = state, Name = symbolValue, Type = tokenType.Replace("*", "") };
+                TableToken.AddToken(token);
+                return token;
             }
             else if (tokenType!.Contains("num"))
             {
-                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
-                return tokenType.Replace("*", "");
+                var token = new Token { Id = state, Name = lexema, Type = tokenType.Replace("*", "") };
+                TableToken.AddToken(token);
+                return token;
             }
             else if (tokenType!.Contains("TEXTO"))
             {
-                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
-                return tokenType;
+                var token = new Token { Id = state, Name = lexema, Type = tokenType };
+                TableToken.AddToken(token);
+                return token;
             }
             else
             {
-                TableToken.AddToken(new Token { Id = state, Name = lexema, Type = tokenType });
-                return lexema;
+                var token = new Token { Id = state, Name = lexema, Type = tokenType };
+                TableToken.AddToken(token);
+                return token;
             }
 
             
         }
 
-        return string.Empty;
+        return null;
     }
 
     private string AddSymbolToTableAndList(string lexema)
